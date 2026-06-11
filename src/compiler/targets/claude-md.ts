@@ -5,7 +5,7 @@
 import type { CompilerTarget } from '../target-registry.js';
 import type { RulesFile } from '../../types/rules.js';
 import type { DecisionsFile } from '../../types/decisions.js';
-import { ruleDescription, generateHeader, formatRulesAsMarkdown } from '../format.js';
+import { ruleDescription, generateHeader, formatRulesAsMarkdown, formatOverview } from '../format.js';
 
 export const claudeMdTarget: CompilerTarget = {
   name: 'claude-md',
@@ -26,6 +26,11 @@ export const claudeMdTarget: CompilerTarget = {
     lines.push('');
     lines.push('---');
     lines.push('');
+
+    // Project overview / orientation map
+    if (rules.overview) {
+      lines.push(formatOverview(rules.overview));
+    }
 
     // Critical rules first (Claude context window optimization)
     const critical = rules.rules.filter(r => r.severity === 'critical');

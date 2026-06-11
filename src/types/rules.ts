@@ -88,6 +88,16 @@ export interface EnhancementResponse {
   }>;
 }
 
+/** A high-level orientation map of the repo, rendered at the top of
+    CLAUDE.md/AGENTS.md so an agent knows the lay of the land before rules. */
+export interface ProjectOverview {
+  summary: string;                                  // one-paragraph what-this-is
+  stack: string[];                                  // detected tech, human-readable
+  entrypoints: Array<{ path: string; note: string }>;
+  directories: Array<{ path: string; role: string }>;
+  commands: Array<{ label: string; command: string }>;
+}
+
 /** The complete rules.yaml structure */
 export interface RulesFile {
   version: number;
@@ -98,6 +108,7 @@ export interface RulesFile {
     languages: string[];
     framework?: string;
   };
+  overview?: ProjectOverview;
   rules: Rule[];
 }
 

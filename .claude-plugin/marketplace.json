@@ -1,0 +1,13 @@
+{
+  "name": "auk",
+  "owner": { "name": "Sandeep Kumar" },
+  "plugins": [
+    {
+      "name": "auk",
+      "source": "./plugins/claude-code",
+      "description": "Run /auk:run for the full pipeline (analyze → agent deep-enhances every rule → compile CLAUDE.md, AGENTS.md, .cursor/rules, copilot-instructions), or /auk:enhance to enhance existing rules. Backed by the auk-develop CLI.",
+      "version": "1.1.1",
+      "author": { "name": "Sandeep Kumar" }
+    }
+  ]
+}

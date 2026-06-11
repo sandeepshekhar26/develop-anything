@@ -6,11 +6,13 @@
 // `auk enhance --apply` validates and merges it into rules.yaml.
 // ============================================================
 
+import * as fs from 'fs';
 import * as path from 'path';
 import type { Rule, RulesFile } from '../types/rules.js';
 import { writeFileWithDir } from '../utils/file-utils.js';
 
 const BATCH_SIZE = 10;
+const MAX_EXCERPT_LINES = 18;
 
 export const RESPONSE_SCHEMA_EXAMPLE = `{
   "version": 1,
@@ -44,7 +46,7 @@ export function emitPrompts(rulesFile: RulesFile, projectRoot: string): string[]
   batches.forEach((batch, i) => {
     const batchName = `enhance-rules-${String(i + 1).padStart(2, '0')}`;
     const outPath = path.join(promptsDir, `${batchName}.md`);
-    writeFileWithDir(outPath, renderBatch(batchName, i + 1, batches.length, batch, rulesFile.project.name));
+    writeFileWithDir(outPath, renderBatch(batchName, i + 1, batches.length, batch, rulesFile, projectRoot));
     files.push(outPath);
   });
 
@@ -54,7 +56,8 @@ export function emitPrompts(rulesFile: RulesFile, projectRoot: string): string[]
   return files;
 }
 
-function renderBatch(batchName: string, n: number, total: number, rules: Rule[], projectName: string): string {
+function renderBatch(batchName: string, n: number, total: number, rules: Rule[], rulesFile: RulesFile, projectRoot: string): string {
+  const projectName = rulesFile.project.name;
   const ruleSections = rules.map(r => {
     const payload = {
       id: r.id,
@@ -64,19 +67,33 @@ function renderBatch(batchName: string, n: number, total: number, rules: Rule[],
       evidence: r.evidence.map(e => ({ file: e.file, line: e.line })),
       confidence: r.confidence,
     };
-    return `## Rule: ${r.id}\n\n\`\`\`json\n${JSON.stringify(payload, null, 2)}\n\`\`\`\n`;
+    const excerpts = renderExcerpts(r, projectRoot);
+    return `## Rule: ${r.id}\n\n\`\`\`json\n${JSON.stringify(payload, null, 2)}\n\`\`\`\n${excerpts}`;
   }).join('\n');
+
+  // Give the agent project orientation so enhancements are repo-specific.
+  const ov = rulesFile.overview;
+  const orientation = ov
+    ? `## Project context\n\n${ov.summary}\n\n` +
+      (ov.stack.length ? `**Stack:** ${ov.stack.join(', ')}\n\n` : '') +
+      (ov.entrypoints.length ? `**Entrypoints:** ${ov.entrypoints.map(e => e.path).join(', ')}\n\n` : '') +
+      (ov.directories.length ? `**Layout:**\n${ov.directories.map(d => `- ${d.path} — ${d.role}`).join('\n')}\n\n` : '')
+    : '';
 
   return `# auk enhancement task (batch ${n}/${total})
 
 You are enhancing AI-context rules for the project "${projectName}".
 
-For each rule below, rewrite the description to be clearer and more actionable
-for an AI coding assistant, and add a short rationale explaining *why* the
-convention likely exists. Optionally add 1-2 example references (existing
-repo files only). Use the evidence files for grounding — read them if needed.
+${orientation}For each rule below, rewrite the description so it is **specific to THIS
+codebase**, not a generic best-practice. Name the actual files, directories,
+types, or functions involved (use the code excerpts provided). Add a short
+rationale explaining *why* the convention exists here and what breaks if it's
+violated. Optionally add 1-2 example references (existing repo files only).
 
-RULES:
+GUIDELINES:
+- Be concrete: "Handlers in backend/internal/handlers/ accept *gin.Context and
+  delegate to a service" beats "use consistent handler signatures".
+- State the actionable rule an agent should follow when writing new code.
 - Do NOT change rule ids, categories, severities, or verification logic.
 - Descriptions must be 10-600 characters, plain text.
 - Only reference files that exist in this repository.
@@ -92,6 +109,33 @@ ${RESPONSE_SCHEMA_EXAMPLE.replace('<batch name>', batchName)}
 
 Then run: \`auk enhance --apply .auk/prompts/${batchName}.response.json\`
 `;
+}
+
+/** Pull a few lines of real code around each evidence reference so the agent
+    can ground its rewrite in the actual codebase rather than guessing. */
+function renderExcerpts(rule: Rule, projectRoot: string): string {
+  const refs = rule.evidence
+    .filter(e => e.file && e.file !== 'various' && !e.file.endsWith('/'))
+    .slice(0, 2);
+  if (refs.length === 0) return '';
+
+  const blocks: string[] = [];
+  for (const ref of refs) {
+    const abs = path.join(projectRoot, ref.file);
+    let content: string;
+    try { content = fs.readFileSync(abs, 'utf-8'); } catch { continue; }
+    const all = content.split('\n');
+    const center = ref.line && ref.line > 0 ? ref.line - 1 : 0;
+    const start = Math.max(0, center - 3);
+    const end = Math.min(all.length, start + MAX_EXCERPT_LINES);
+    const snippet = all.slice(start, end)
+      .map((l, idx) => `${String(start + idx + 1).padStart(4)} | ${l}`)
+      .join('\n');
+    const lang = path.extname(ref.file).slice(1) || '';
+    blocks.push(`*${ref.file}${ref.line ? `:${ref.line}` : ''}*\n\n\`\`\`${lang}\n${snippet}\n\`\`\``);
+  }
+  if (blocks.length === 0) return '';
+  return `\n**Code:**\n\n${blocks.join('\n\n')}\n`;
 }
 
 const README = `# auk enhancement prompts

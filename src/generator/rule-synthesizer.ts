@@ -6,6 +6,7 @@
 import type { AnalysisResult, DetectedPattern } from '../types/analysis.js';
 import type { Rule, RuleCategory, RuleSeverity, RuleVerification, RulesFile } from '../types/rules.js';
 import { rankRules } from './priority-ranker.js';
+import { buildProjectOverview } from './project-overview.js';
 import { logger } from '../utils/logger.js';
 
 /** Convert a detected pattern into a Rule */
@@ -34,10 +35,22 @@ function patternToRule(pattern: DetectedPattern): Rule {
     'naming-classes-pascalcase': { type: 'naming-convention', pattern: 'PascalCase', subject: 'class' },
     'error-handling-result-pattern': { type: 'pattern-match', pattern: 'Result<' },
     'error-handling-try-catch': { type: 'pattern-match', pattern: 'try {' },
+    'error-handling-promise-chain': { type: 'pattern-match', pattern: '.catch(' },
     'exports-named-only': { type: 'no-pattern', pattern: 'export default' },
+    'exports-default-preferred': { type: 'pattern-match', pattern: 'export default' },
     'types-prefer-interface': { type: 'pattern-match', pattern: 'interface ' },
     'types-prefer-type-alias': { type: 'pattern-match', pattern: 'type ' },
     'imports-relative': { type: 'pattern-match', pattern: "from '." },
+    'imports-path-alias': { type: 'pattern-match', pattern: "from '@/" },
+    'go-error-handling-err-nil': { type: 'pattern-match', pattern: 'if err != nil' },
+    'go-no-panic-in-handlers': { type: 'no-pattern', pattern: 'panic(' },
+    'go-context-first-param': { type: 'pattern-match', pattern: 'context.Context' },
+    'async-await-pattern': { type: 'pattern-match', pattern: 'async ' },
+    'nextjs-use-client-directive': { type: 'pattern-match', pattern: '"use client"' },
+    'types-zod-validation': { type: 'pattern-match', pattern: "from 'zod'" },
+    'state-management-zustand': { type: 'pattern-match', pattern: "from 'zustand'" },
+    'state-management-redux': { type: 'pattern-match', pattern: "from '@reduxjs/toolkit'" },
+    'state-management-react-query': { type: 'pattern-match', pattern: "from '@tanstack/react-query'" },
   };
 
   const verification: RuleVerification = verificationMap[pattern.id]
@@ -191,7 +204,7 @@ function generateCallGraphRules(analysis: AnalysisResult): Rule[] {
 type SymbolNodeLite = NonNullable<AnalysisResult['graph']['symbols']>[number];
 
 /** Synthesize rules from analysis results */
-export function synthesizeRules(analysis: AnalysisResult, projectName: string): RulesFile {
+export function synthesizeRules(analysis: AnalysisResult, projectName: string, projectRoot?: string): RulesFile {
   logger.debug('Synthesizing rules from analysis...');
 
   // Convert patterns to rules
@@ -216,6 +229,11 @@ export function synthesizeRules(analysis: AnalysisResult, projectName: string): 
   // Detect framework
   const framework = detectFramework(analysis);
 
+  // Build the project overview map (best effort; needs manifest files)
+  const overview = projectRoot
+    ? buildProjectOverview(analysis, projectName, projectRoot)
+    : undefined;
+
   // Calculate health score (100% initially since we just generated the rules)
   const healthScore = 100;
 
@@ -228,6 +246,7 @@ export function synthesizeRules(analysis: AnalysisResult, projectName: string): 
       languages,
       framework,
     },
+    overview,
     rules: rankedRules,
   };
 }

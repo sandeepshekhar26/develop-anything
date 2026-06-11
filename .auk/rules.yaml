@@ -1,0 +1,404 @@
+version: 1
+generatedAt: 2026-06-11T16:32:55.552Z
+healthScore: 100
+project:
+  name: auk
+  languages:
+    - typescript
+    - javascript
+  framework: Express
+overview:
+  summary: "`auk` is a codebase (92 source files, primarily typescript/javascript)."
+  stack: []
+  entrypoints:
+    - path: dist/index.js
+      note: Package main entry (package.json "main")
+  directories:
+    - path: src/commands/
+      role: source — 11 files, mostly typescript
+    - path: src/analyzer/
+      role: source — 8 files, mostly typescript
+    - path: src/compiler/targets/
+      role: source — 7 files, mostly typescript
+    - path: src/utils/
+      role: shared utilities — 7 files, mostly typescript
+    - path: src/generator/
+      role: source — 6 files, mostly typescript
+    - path: src/reviewer/
+      role: source — 6 files, mostly typescript
+    - path: src/decisions/
+      role: source — 5 files, mostly typescript
+    - path: src/types/
+      role: type definitions — 5 files, mostly typescript
+    - path: scripts/
+      role: build/dev scripts — 4 files, mostly javascript
+    - path: src/semantic/
+      role: source — 4 files, mostly typescript
+    - path: src/verifier/
+      role: source — 4 files, mostly typescript
+    - path: tests/analyzer/
+      role: source — 4 files, mostly typescript
+  commands:
+    - label: Dev (frontend)
+      command: npm run dev
+    - label: Start (frontend)
+      command: npm run start
+    - label: Build (frontend)
+      command: npm run build
+    - label: Test (frontend)
+      command: npm run test
+    - label: Typecheck (frontend)
+      command: npm run typecheck
+rules:
+  - id: architecture-no-utility-to-model
+    category: architecture
+    severity: critical
+    priority: 84
+    description: Utility layer should not import from Model layer. 2 existing violations are known tech debt — don't add more.
+    evidence: []
+    verification:
+      type: import-constraint
+      source: utility/**
+      forbidden: model/**
+      knownViolations: 2
+    confidence: 0.9
+  - id: naming-functions-camelcase
+    category: naming
+    severity: critical
+    priority: 79
+    description: All function names use camelCase naming convention.
+    evidence:
+      - file: scripts/ts-loader.mjs
+        line: 7
+        note: Example of this pattern
+      - file: src/analyzer/call-graph.ts
+        line: 26
+        note: Example of this pattern
+      - file: src/analyzer/call-graph.ts
+        line: 119
+        note: Example of this pattern
+    verification:
+      type: naming-convention
+      pattern: camelCase
+      subject: function
+      threshold: 1
+    confidence: 1
+  - id: naming-classes-pascalcase
+    category: naming
+    severity: critical
+    priority: 79
+    description: All class and interface names use PascalCase naming convention.
+    evidence:
+      - file: src/analyzer/call-graph.ts
+        line: 21
+        note: Example of this pattern
+      - file: src/analyzer/parser-interface.ts
+        line: 9
+        note: Example of this pattern
+      - file: src/analyzer/parser-interface.ts
+        line: 15
+        note: Example of this pattern
+    verification:
+      type: naming-convention
+      pattern: PascalCase
+      subject: class
+      threshold: 1
+    confidence: 1
+  - id: testing-naming-test
+    category: testing
+    severity: critical
+    priority: 74
+    description: Test files follow the *.test.ts / *.test.js naming convention.
+    evidence:
+      - file: tests/analyzer/call-graph.test.ts
+        note: Example of this pattern
+      - file: tests/analyzer/parser.test.ts
+        note: Example of this pattern
+      - file: tests/analyzer/scanner.test.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 1
+    confidence: 1
+  - id: architecture-hotspot-tests-helpers-expect-ts-expect
+    category: architecture
+    severity: warning
+    priority: 71
+    description: expect (tests/helpers/expect.ts) is called from 105 places — changes here have a high blast radius. Keep its signature and behavior stable.
+    evidence:
+      - file: tests/helpers/expect.ts
+        line: 105
+        note: fan-in 105
+    verification:
+      type: custom
+    confidence: 0.85
+  - id: architecture-hotspot-src-utils-logger-ts-info
+    category: architecture
+    severity: warning
+    priority: 71
+    description: info (src/utils/logger.ts) is called from 22 places — changes here have a high blast radius. Keep its signature and behavior stable.
+    evidence:
+      - file: src/utils/logger.ts
+        line: 64
+        note: fan-in 22
+    verification:
+      type: custom
+    confidence: 0.85
+  - id: architecture-hotspot-src-utils-logger-ts-success
+    category: architecture
+    severity: warning
+    priority: 71
+    description: success (src/utils/logger.ts) is called from 21 places — changes here have a high blast radius. Keep its signature and behavior stable.
+    evidence:
+      - file: src/utils/logger.ts
+        line: 69
+        note: fan-in 21
+    verification:
+      type: custom
+    confidence: 0.85
+  - id: architecture-god-class-src-utils-cli-ts-Command
+    category: architecture
+    severity: warning
+    priority: 70
+    description: Command (src/utils/cli.ts) has 18 methods and 24 inbound calls — it is becoming a god object. Don't add more responsibilities; split it instead.
+    evidence:
+      - file: src/utils/cli.ts
+        line: 46
+        note: 18 methods, 24 inbound calls
+    verification:
+      type: custom
+    confidence: 0.8
+  - id: architecture-god-class-tests-helpers-expect-ts-Expectation
+    category: architecture
+    severity: warning
+    priority: 70
+    description: Expectation (tests/helpers/expect.ts) has 15 methods and 2 inbound calls — it is becoming a god object. Don't add more responsibilities; split it instead.
+    evidence:
+      - file: tests/helpers/expect.ts
+        line: 8
+        note: 15 methods, 2 inbound calls
+    verification:
+      type: custom
+    confidence: 0.8
+  - id: architecture-hub-src-types-rules-ts
+    category: architecture
+    severity: warning
+    priority: 69
+    description: src/types/rules.ts has 32 connections — it may be becoming a god object. Consider breaking it into smaller modules.
+    evidence:
+      - file: src/types/rules.ts
+        note: 32 connections (degree centrality)
+    verification:
+      type: custom
+    confidence: 0.7
+  - id: architecture-hub-src-utils-logger-ts
+    category: architecture
+    severity: warning
+    priority: 69
+    description: src/utils/logger.ts has 31 connections — it may be becoming a god object. Consider breaking it into smaller modules.
+    evidence:
+      - file: src/utils/logger.ts
+        note: 31 connections (degree centrality)
+    verification:
+      type: custom
+    confidence: 0.7
+  - id: architecture-hub-src-types-analysis-ts
+    category: architecture
+    severity: warning
+    priority: 69
+    description: src/types/analysis.ts has 30 connections — it may be becoming a god object. Consider breaking it into smaller modules.
+    evidence:
+      - file: src/types/analysis.ts
+        note: 30 connections (degree centrality)
+    verification:
+      type: custom
+    confidence: 0.7
+  - id: exports-named-only
+    category: imports
+    severity: warning
+    priority: 66
+    description: The codebase uses named exports exclusively. Avoid default exports.
+    evidence:
+      - file: scripts/ts-loader.mjs
+        note: Example of this pattern
+      - file: src/analyzer/call-graph.ts
+        note: Example of this pattern
+      - file: src/analyzer/import-graph.ts
+        note: Example of this pattern
+    verification:
+      type: no-pattern
+      pattern: export default
+      threshold: 0.8152173913043478
+    confidence: 0.8152173913043478
+  - id: imports-relative
+    category: imports
+    severity: warning
+    priority: 65
+    description: The codebase uses relative imports (e.g., ../services/user) rather than absolute/alias paths.
+    evidence:
+      - file: various
+        note: Example of this pattern
+      - file: various
+        note: Example of this pattern
+      - file: various
+        note: Example of this pattern
+    verification:
+      type: pattern-match
+      pattern: from '.
+      threshold: 0.7446808510638298
+    confidence: 0.7446808510638298
+  - id: types-prefer-interface
+    category: types
+    severity: warning
+    priority: 60
+    description: The codebase prefers interface declarations over type aliases for object shapes.
+    evidence:
+      - file: various
+        note: Example of this pattern
+      - file: various
+        note: Example of this pattern
+      - file: various
+        note: Example of this pattern
+    verification:
+      type: pattern-match
+      pattern: "interface "
+      threshold: 0.7432432432432432
+    confidence: 0.7432432432432432
+  - id: naming-files-kebab-case
+    category: naming
+    severity: info
+    priority: 41
+    description: Source files are named using kebab-case (e.g., user-service.ts, payment-handler.go). Use this convention for all new files.
+    evidence:
+      - file: scripts/copy-assets.mjs
+        note: Example of this pattern
+      - file: scripts/ts-loader.mjs
+        note: Example of this pattern
+      - file: scripts/ts-run.mjs
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.4673913043478261
+    confidence: 0.4673913043478261
+  - id: patterns-function-length
+    category: patterns
+    severity: info
+    priority: 31
+    description: 90% of functions in this codebase are 53 lines or shorter. Keep new functions in that range; extract helpers instead of growing bodies.
+    evidence: []
+    verification:
+      type: custom
+      threshold: 0.9
+    confidence: 0.75
+  - id: cluster-target-compiler
+    category: patterns
+    severity: info
+    priority: 31
+    description: "12 files share the 'target-compiler' shape (key terms: target, compiler, rules). They share imports: ../../types/decisions.js, ../../types/rules.js, ../format.js. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/commands/compile.ts
+        note: Example of this pattern
+      - file: src/compiler/compiler-engine.ts
+        note: Example of this pattern
+      - file: src/compiler/format.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.13
+    confidence: 0.13
+  - id: cluster-enhancement-enhancements
+    category: patterns
+    severity: info
+    priority: 30
+    description: "5 files share the 'enhancement-enhancements' shape (key terms: enhancement, enhancements, generator). They share imports: ../types/rules.js, fs, path. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/commands/enhance.ts
+        note: Example of this pattern
+      - file: src/commands/generate.ts
+        note: Example of this pattern
+      - file: src/generator/enhancement-validator.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.05
+    confidence: 0.05
+  - id: cluster-url-mjs
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'url-mjs' shape (key terms: url, mjs, scripts). They share imports: fs, node:url, path. New files of this kind should follow the same structure."
+    evidence:
+      - file: scripts/copy-assets.mjs
+        note: Example of this pattern
+      - file: scripts/ts-loader.mjs
+        note: Example of this pattern
+      - file: scripts/ts-run.mjs
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04
+  - id: cluster-assert-test
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'assert-test' shape (key terms: assert, test, call). They share imports: ../../src/analyzer/parser.js, ../../src/types/analysis.js, fs. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/analyzer/call-graph.ts
+        note: Example of this pattern
+      - file: tests/analyzer/call-graph.test.ts
+        note: Example of this pattern
+      - file: tests/analyzer/ts-parser.test.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04
+  - id: cluster-config-auk
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'config-auk' shape (key terms: config, auk, dir). They share imports: ../types/config.js, ../utils/cli.js, ../utils/config.js. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/analyzer/scanner.ts
+        note: Example of this pattern
+      - file: src/commands/badge.ts
+        note: Example of this pattern
+      - file: src/commands/init.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04
+  - id: cluster-claims-verifier
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'claims-verifier' shape (key terms: claims, verifier, claim). They share imports: ../types/rules.js, ../utils/logger.js. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/commands/verify.ts
+        note: Example of this pattern
+      - file: src/verifier/claim-extractor.ts
+        note: Example of this pattern
+      - file: src/verifier/claim-verifier.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04
+  - id: cluster-tfidf-semantic
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'tfidf-semantic' shape (key terms: tfidf, semantic, cluster). They share imports: ./tfidf.js. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/semantic/clusterer.ts
+        note: Example of this pattern
+      - file: src/semantic/similarity.ts
+        note: Example of this pattern
+      - file: src/semantic/tfidf.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04

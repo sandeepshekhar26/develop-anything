@@ -1,6 +1,7 @@
 {
   "name": "auk",
-  "description": "AI context engineering — generate, verify, and enhance codebase rules with auk",
-  "version": "1.0.0",
-  "author": { "name": "Sandeep Kumar" }
+  "description": "AI context engineering — analyze your codebase and let this agent deep-enhance every rule, then compile CLAUDE.md / AGENTS.md / .cursor-rules / copilot-instructions. Commands: /auk:run, /auk:enhance.",
+  "version": "1.1.1",
+  "author": { "name": "Sandeep Kumar" },
+  "homepage": "https://github.com/sandeepshekhar26/develop-anything"
 }

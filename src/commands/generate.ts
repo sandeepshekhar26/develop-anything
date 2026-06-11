@@ -113,7 +113,7 @@ export const generateCommand = new Command('generate')
     // Step 5: Synthesize rules
     logger.step(5, 5, 'Synthesizing rules...');
     const previousRules = await loadYaml<RulesFile>('rules.yaml', projectRoot);
-    const rulesFile = synthesizeRules(analysis, config.project.name || 'project');
+    const rulesFile = synthesizeRules(analysis, config.project.name || 'project', projectRoot);
     // carry LLM enhancements across regeneration (stale-marked if core changed)
     preserveEnhancements(previousRules, rulesFile);
     await saveYaml('rules.yaml', rulesFile, projectRoot);
@@ -123,6 +123,7 @@ export const generateCommand = new Command('generate')
       const promptFiles = emitPrompts(rulesFile, projectRoot);
       if (promptFiles.length > 0) {
         logger.success(`Wrote ${promptFiles.length} enhancement prompt batch${promptFiles.length > 1 ? 'es' : ''} → .auk/prompts/`);
+        logger.info('Let your agent do the deep pass: run `/auk:enhance` in Claude Code, or point any agent at .auk/prompts/.');
       }
     }
 

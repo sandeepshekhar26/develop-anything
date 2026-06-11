@@ -10,3 +10,4 @@ coverage/
 .auk/cache.json
 .auk/prompts/
 .auk/graph.html
+*.tgz

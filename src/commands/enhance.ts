@@ -58,5 +58,10 @@ export const enhanceCommand = new Command('enhance')
     }
     const files = emitPrompts(rulesFile, projectRoot);
     logger.success(`Wrote ${files.length} prompt batch${files.length > 1 ? 'es' : ''} for ${pending.length} rules → .auk/prompts/`);
-    logger.info('Have your AI agent process each prompt file, then run `auk enhance --apply <response.json>`.');
+    console.log();
+    logger.info('Now let your AI agent do the deep pass automatically:');
+    logger.info('  • Claude Code: run  /auk:enhance   (installs via the auk plugin)');
+    logger.info('  • Any agent: point it at .auk/prompts/ and tell it to follow each file,');
+    logger.info('    then run `auk enhance --apply <response.json>` and `auk compile`.');
+    logger.info('The agent reads the code and rewrites the rules — no copy-paste needed.');
   });

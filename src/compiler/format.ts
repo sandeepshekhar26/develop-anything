@@ -6,7 +6,7 @@
 // keeping this separate avoids a circular dependency).
 // ============================================================
 
-import type { Rule } from '../types/rules.js';
+import type { Rule, ProjectOverview } from '../types/rules.js';
 import type { DecisionsFile } from '../types/decisions.js';
 
 /** Effective description: LLM-enhanced text when present and not stale */
@@ -14,6 +14,47 @@ export function ruleDescription(rule: Rule): string {
   return rule.enhanced && !rule.enhanced.stale
     ? rule.enhanced.description
     : rule.description;
+}
+
+/** Render the project overview as a markdown orientation block. */
+export function formatOverview(overview: ProjectOverview): string {
+  const lines: string[] = [];
+  lines.push('## 📍 Project Overview');
+  lines.push('');
+  lines.push(overview.summary);
+  lines.push('');
+
+  if (overview.stack.length > 0) {
+    lines.push(`**Stack:** ${overview.stack.join(' · ')}`);
+    lines.push('');
+  }
+
+  if (overview.commands.length > 0) {
+    lines.push('**Commands:**');
+    lines.push('');
+    lines.push('```bash');
+    for (const c of overview.commands) lines.push(`${c.command.padEnd(28)}# ${c.label}`);
+    lines.push('```');
+    lines.push('');
+  }
+
+  if (overview.entrypoints.length > 0) {
+    lines.push('**Entrypoints:**');
+    lines.push('');
+    for (const e of overview.entrypoints) lines.push(`- \`${e.path}\` — ${e.note}`);
+    lines.push('');
+  }
+
+  if (overview.directories.length > 0) {
+    lines.push('**Directory map:**');
+    lines.push('');
+    for (const d of overview.directories) lines.push(`- \`${d.path}\` — ${d.role}`);
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push('');
+  return lines.join('\n');
 }
 
 /** Generate the header comment for compiled files */

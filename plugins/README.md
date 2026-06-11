@@ -1,16 +1,38 @@
 # auk agent integrations
 
-auk works standalone (`npx -y auk-develop generate`). These integrations add
-the LLM-enhancement loop, which uses **your existing AI agent** — no API keys.
+auk works standalone (`npx -y auk-develop generate`), but the **deep pass** —
+rewriting each mined rule into sharp, codebase-specific guidance — is best done
+by an agent that can read your code. These integrations make that one command.
 
-## Claude Code
+The split is deliberate:
 
-```bash
-# from a project using auk:
-claude plugin install ./plugins/claude-code   # or copy into ~/.claude/plugins
+- **Structural facts** (parsing, call graph, clusters, conventions) come from the
+  deterministic `auk-develop` CLI — fast, free, repeatable.
+- **Semantic depth** (why a rule exists, what breaks if violated, the real file
+  and type names) comes from *your* agent during the deep pass — no API keys,
+  no copy-paste.
+
+## Claude Code (recommended)
+
+Install from this repo as a plugin marketplace:
+
+```
+/plugin marketplace add sandeepshekhar26/develop-anything
+/plugin install auk
 ```
 
-Then run `/auk-enhance` inside Claude Code. Alternatively register the MCP server:
+Then, in any project:
+
+```
+/auk:run        # full pipeline: analyze → deep-enhance every rule → compile all files
+/auk:enhance    # just the deep-enhance pass on existing rules, then compile
+```
+
+`/auk:run` runs `auk generate --emit-prompts`, the agent reads `.auk/prompts/*` and
+the cited code, writes the enhanced rules back, applies them, and compiles
+CLAUDE.md / AGENTS.md / `.cursor/rules` / copilot-instructions — all in one go.
+
+You can also register the MCP server for live queries:
 
 ```json
 { "mcpServers": { "auk": { "command": "npx", "args": ["-y", "auk-develop", "mcp"] } } }
@@ -18,13 +40,18 @@ Then run `/auk-enhance` inside Claude Code. Alternatively register the MCP serve
 
 and ask the agent to use `get_enhancement_tasks` + `apply_enhancements`.
 
-## Cursor / Copilot / other agents
+## Cursor / Copilot / Codex / Gemini CLI / other agents
 
-Add this to your rules file (`.cursor/rules/auk.mdc`, `.github/copilot-instructions.md`, …):
+The deep pass is agent-agnostic. Add this to your agent's rules file
+(`.cursor/rules/auk.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`, …):
 
-> When asked to enhance auk rules: run `npx -y auk-develop enhance --emit`,
-> read each `.auk/prompts/enhance-rules-NN.md`, write the matching
-> `*.response.json` per the embedded schema, run
-> `npx -y auk-develop enhance --apply <file>`, then `npx -y auk-develop compile`.
+> When asked to set up or refresh auk context: run
+> `npx -y auk-develop generate --no-compile --emit-prompts`, read every
+> `.auk/prompts/enhance-rules-NN.md`, open the cited code, and rewrite each rule
+> to be specific to this codebase (real dirs, types, frameworks) with a
+> rationale. Write each `enhance-rules-NN.response.json` per the embedded schema,
+> run `npx -y auk-develop enhance --apply <file>` for each, then
+> `npx -y auk-develop compile`.
 
-The flow is agent-agnostic: prompts in, schema-validated JSON out.
+Prompts in, schema-validated JSON out — the same loop the Claude Code command
+automates.
