@@ -7,13 +7,13 @@
 **One command. Every AI coding tool understands your codebase.**
 
 [![CI](https://github.com/sandeepshekhar26/develop-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/sandeepshekhar26/develop-anything/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/auk-dev)](https://www.npmjs.com/package/auk-dev)
+[![npm](https://img.shields.io/npm/v/auk-develop)](https://www.npmjs.com/package/auk-develop)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](package.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Node 20+](https://img.shields.io/badge/node-%E2%89%A520-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 
 ```bash
-npx auk-dev init && npx auk-dev generate
+npx auk-develop init && npx auk-develop generate
 ```
 
 *30 seconds later: CLAUDE.md, AGENTS.md, .cursorrules, copilot-instructions.md — all derived from your **actual code**, not templates.*
@@ -53,8 +53,8 @@ Every rule carries **evidence** (`file:line` references), a **confidence score**
 
 ```bash
 cd your-project
-npx auk-dev init        # detect your stack, create .auk/
-npx auk-dev generate    # analyze code → rules → all agent formats
+npx auk-develop init        # detect your stack, create .auk/
+npx auk-develop generate    # analyze code → rules → all agent formats
 ```
 
 That's it. Now every AI tool you use reads context derived from your real code.
@@ -118,7 +118,7 @@ Static context files have a ceiling — they're snapshots. `auk mcp` exposes you
 ```json
 {
   "mcpServers": {
-    "auk": { "command": "npx", "args": ["-y", "auk-dev", "mcp"] }
+    "auk": { "command": "npx", "args": ["-y", "auk-develop", "mcp"] }
   }
 }
 ```

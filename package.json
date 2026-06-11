@@ -1,11 +1,12 @@
 {
-  "name": "auk-dev",
+  "name": "auk-develop",
   "version": "1.0.0",
   "description": "The AI Context Engineering Platform \u2014 one command and every AI coding tool understands your codebase. Zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "auk": "dist/index.js"
+    "auk": "dist/index.js",
+    "auk-dev": "dist/index.js"
   },
   "type": "module",
   "scripts": {
