@@ -27,9 +27,14 @@ export const verifyCommand = new Command('verify')
 
     // Load rules
     const rulesFile = await loadYaml<RulesFile>('rules.yaml', projectRoot);
-    if (!rulesFile || !rulesFile.rules || rulesFile.rules.length === 0) {
-      logger.warn('No rules found. Run `auk generate` first.');
+    if (!rulesFile) {
+      logger.warn('No rules file found. Run `auk generate` first.');
       process.exit(1);
+    }
+    if (!rulesFile.rules || rulesFile.rules.length === 0) {
+      // A generated-but-empty ruleset (tiny codebases) is healthy, not an error.
+      logger.info('Rules file contains 0 rules — nothing to verify.');
+      return;
     }
 
     let rules = rulesFile.rules;

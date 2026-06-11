@@ -19,7 +19,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # Tests run on node:test with ZERO dependencies — no install needed
+      # web-tree-sitter is a runtime dependency — without it the parser
+      # silently falls back to regex and the engine assertions fail.
+      - name: Install dependencies
+        run: npm ci || npm install
+
       - name: Run tests
         run: npm test
 
