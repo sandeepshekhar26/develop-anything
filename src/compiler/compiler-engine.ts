@@ -21,9 +21,15 @@ export async function compileRules(
 ): Promise<Map<string, string>> {
   // Load rules
   const rulesFile = await loadYaml<RulesFile>('rules.yaml', projectRoot);
-  if (!rulesFile || !rulesFile.rules || rulesFile.rules.length === 0) {
-    logger.warn('No rules found. Run `auk generate` first.');
+  if (!rulesFile) {
+    logger.warn('No rules file found. Run `auk generate` first.');
     return new Map();
+  }
+  if (!rulesFile.rules) rulesFile.rules = [];
+  if (rulesFile.rules.length === 0) {
+    // Still emit target files: the project overview is useful context even
+    // when no conventions were mined (tiny codebases).
+    logger.info('Rules file contains 0 rules — compiling overview only.');
   }
 
   // Load decisions if available
