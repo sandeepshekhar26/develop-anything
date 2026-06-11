@@ -5,6 +5,9 @@
 // One command. Every AI coding tool understands your codebase.
 // ============================================================
 
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 import { Command } from './utils/cli.js';
 import { initCommand } from './commands/init.js';
 import { generateCommand } from './commands/generate.js';
@@ -19,12 +22,23 @@ import { enhanceCommand } from './commands/enhance.js';
 import { graphCommand } from './commands/graph.js';
 import { setVerbose } from './utils/logger.js';
 
+/** Read the package version relative to this module (works in dist and dev). */
+function readVersion(): string {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  for (const rel of ['../package.json', '../../package.json']) {
+    try {
+      return JSON.parse(fs.readFileSync(path.join(here, rel), 'utf-8')).version || '0.0.0';
+    } catch { /* try next */ }
+  }
+  return '0.0.0';
+}
+
 const program = new Command();
 
 program
   .name('auk')
   .description('auk — The AI Context Engineering Platform. One command. Every AI coding tool understands your codebase.')
-  .version('1.0.0')
+  .version(readVersion())
   .option('-v, --verbose', 'Enable verbose output')
   .option('--no-color', 'Disable colored output')
   .hook('preAction', (thisCommand) => {
