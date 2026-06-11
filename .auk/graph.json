@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": "2026-06-11T16:32:55.502Z",
+  "generatedAt": "2026-06-11T17:08:29.904Z",
   "nodes": [
     {
       "id": "scripts/copy-assets.mjs",
@@ -58,7 +58,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -66,15 +66,19 @@
       "type": "file",
       "layer": "service",
       "symbols": [
+        "ResolverContext",
         "resolveImport",
+        "resolveImportTargets",
+        "buildResolverContext",
+        "aliasBase",
         "buildImportGraph",
         "detectCircularDeps",
         "dfs",
         "findHubFiles"
       ],
       "centrality": {
-        "degree": 4,
-        "betweenness": 0.014388489208633094
+        "degree": 5,
+        "betweenness": 0.02197802197802198
       }
     },
     {
@@ -88,7 +92,7 @@
       ],
       "centrality": {
         "degree": 2,
-        "betweenness": 0.0035971223021582736
+        "betweenness": 0.003663003663003663
       }
     },
     {
@@ -113,7 +117,7 @@
       ],
       "centrality": {
         "degree": 12,
-        "betweenness": 0.12949640287769784
+        "betweenness": 0.13186813186813187
       }
     },
     {
@@ -126,7 +130,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -139,7 +143,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -152,8 +156,8 @@
         "getFileSummary"
       ],
       "centrality": {
-        "degree": 8,
-        "betweenness": 0.05755395683453238
+        "degree": 7,
+        "betweenness": 0.04395604395604396
       }
     },
     {
@@ -168,7 +172,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -193,7 +197,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -203,7 +207,7 @@
       "symbols": [],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -213,7 +217,7 @@
       "symbols": [],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -223,7 +227,7 @@
       "symbols": [],
       "centrality": {
         "degree": 8,
-        "betweenness": 0.025179856115107913
+        "betweenness": 0.02564102564102564
       }
     },
     {
@@ -233,7 +237,7 @@
       "symbols": [],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -243,7 +247,7 @@
       "symbols": [],
       "centrality": {
         "degree": 7,
-        "betweenness": 0.02158273381294964
+        "betweenness": 0.02197802197802198
       }
     },
     {
@@ -253,7 +257,7 @@
       "symbols": [],
       "centrality": {
         "degree": 17,
-        "betweenness": 0.05755395683453238
+        "betweenness": 0.05860805860805861
       }
     },
     {
@@ -263,7 +267,7 @@
       "symbols": [],
       "centrality": {
         "degree": 7,
-        "betweenness": 0.02158273381294964
+        "betweenness": 0.02197802197802198
       }
     },
     {
@@ -272,8 +276,8 @@
       "layer": "service",
       "symbols": [],
       "centrality": {
-        "degree": 9,
-        "betweenness": 0.02877697841726619
+        "degree": 7,
+        "betweenness": 0.02197802197802198
       }
     },
     {
@@ -283,7 +287,7 @@
       "symbols": [],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -293,7 +297,7 @@
       "symbols": [],
       "centrality": {
         "degree": 15,
-        "betweenness": 0.050359712230215826
+        "betweenness": 0.05128205128205128
       }
     },
     {
@@ -302,8 +306,8 @@
       "layer": "service",
       "symbols": [],
       "centrality": {
-        "degree": 12,
-        "betweenness": 0.039568345323741004
+        "degree": 11,
+        "betweenness": 0.03663003663003663
       }
     },
     {
@@ -314,8 +318,8 @@
         "compileRules"
       ],
       "centrality": {
-        "degree": 10,
-        "betweenness": 0.05755395683453238
+        "degree": 9,
+        "betweenness": 0.05128205128205128
       }
     },
     {
@@ -330,7 +334,7 @@
       ],
       "centrality": {
         "degree": 9,
-        "betweenness": 0.050359712230215826
+        "betweenness": 0.05128205128205128
       }
     },
     {
@@ -344,8 +348,8 @@
         "getTarget"
       ],
       "centrality": {
-        "degree": 19,
-        "betweenness": 0.3237410071942446
+        "degree": 18,
+        "betweenness": 0.29304029304029305
       }
     },
     {
@@ -357,7 +361,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.02877697841726619
+        "betweenness": 0.029304029304029304
       }
     },
     {
@@ -369,7 +373,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -381,7 +385,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.02877697841726619
+        "betweenness": 0.029304029304029304
       }
     },
     {
@@ -393,7 +397,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -405,7 +409,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.02877697841726619
+        "betweenness": 0.029304029304029304
       }
     },
     {
@@ -417,7 +421,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -429,7 +433,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -441,7 +445,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -456,7 +460,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -485,7 +489,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -499,7 +503,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -514,7 +518,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -538,7 +542,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -550,7 +554,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -563,7 +567,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.02158273381294964
+        "betweenness": 0.02197802197802198
       }
     },
     {
@@ -575,7 +579,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -623,7 +627,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -634,8 +638,8 @@
         "overlayDiffOnGraph"
       ],
       "centrality": {
-        "degree": 4,
-        "betweenness": 0.01079136690647482
+        "degree": 3,
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -648,7 +652,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -661,7 +665,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -673,7 +677,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -687,7 +691,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -708,7 +712,7 @@
       ],
       "centrality": {
         "degree": 8,
-        "betweenness": 0.05755395683453238
+        "betweenness": 0.05860805860805861
       }
     },
     {
@@ -738,7 +742,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -779,7 +783,7 @@
         "AukConfig"
       ],
       "centrality": {
-        "degree": 9,
+        "degree": 7,
         "betweenness": 0
       }
     },
@@ -815,7 +819,7 @@
         "ReviewResult"
       ],
       "centrality": {
-        "degree": 8,
+        "degree": 7,
         "betweenness": 0
       }
     },
@@ -904,8 +908,8 @@
         "saveJson"
       ],
       "centrality": {
-        "degree": 18,
-        "betweenness": 0.2014388489208633
+        "degree": 16,
+        "betweenness": 0.14285714285714285
       }
     },
     {
@@ -950,7 +954,7 @@
       ],
       "centrality": {
         "degree": 5,
-        "betweenness": 0.014388489208633094
+        "betweenness": 0.014652014652014652
       }
     },
     {
@@ -1001,7 +1005,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -1014,7 +1018,7 @@
       ],
       "centrality": {
         "degree": 6,
-        "betweenness": 0.017985611510791366
+        "betweenness": 0.018315018315018316
       }
     },
     {
@@ -1028,7 +1032,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -1041,7 +1045,7 @@
       ],
       "centrality": {
         "degree": 4,
-        "betweenness": 0.01079136690647482
+        "betweenness": 0.01098901098901099
       }
     },
     {
@@ -1053,7 +1057,7 @@
       ],
       "centrality": {
         "degree": 3,
-        "betweenness": 0.007194244604316547
+        "betweenness": 0.007326007326007326
       }
     },
     {
@@ -1073,6 +1077,16 @@
       "symbols": [],
       "centrality": {
         "degree": 3,
+        "betweenness": 0
+      }
+    },
+    {
+      "id": "tests/analyzer/resolver.test.ts",
+      "type": "file",
+      "layer": "test",
+      "symbols": [],
+      "centrality": {
+        "degree": 1,
         "betweenness": 0
       }
     },
@@ -1234,7 +1248,8 @@
       "source": "src/analyzer/call-graph.ts",
       "target": "src/analyzer/import-graph.ts",
       "symbols": [
-        "resolveImport"
+        "resolveImport",
+        "type ResolverContext"
       ],
       "type": "import"
     },
@@ -1730,7 +1745,8 @@
       "target": "src/analyzer/import-graph.ts",
       "symbols": [
         "buildImportGraph",
-        "detectCircularDeps"
+        "detectCircularDeps",
+        "buildResolverContext"
       ],
       "type": "import"
     },
@@ -1868,14 +1884,6 @@
     },
     {
       "source": "src/commands/init.ts",
-      "target": "src/types/config.ts",
-      "symbols": [
-        "AukConfig"
-      ],
-      "type": "import"
-    },
-    {
-      "source": "src/commands/init.ts",
       "target": "src/utils/git.ts",
       "symbols": [
         "gitOps"
@@ -1895,14 +1903,6 @@
       "target": "src/analyzer/scanner.ts",
       "symbols": [
         "scanDirectory"
-      ],
-      "type": "import"
-    },
-    {
-      "source": "src/commands/init.ts",
-      "target": "src/analyzer/scanner.ts",
-      "symbols": [
-        "getFileSummary"
       ],
       "type": "import"
     },
@@ -2139,14 +2139,6 @@
     },
     {
       "source": "src/commands/verify.ts",
-      "target": "src/utils/config.ts",
-      "symbols": [
-        "saveJson"
-      ],
-      "type": "import"
-    },
-    {
-      "source": "src/commands/verify.ts",
       "target": "src/utils/logger.ts",
       "symbols": [
         "logger"
@@ -2174,14 +2166,6 @@
       "target": "src/compiler/target-registry.ts",
       "symbols": [
         "getEnabledTargets"
-      ],
-      "type": "import"
-    },
-    {
-      "source": "src/compiler/compiler-engine.ts",
-      "target": "src/compiler/target-registry.ts",
-      "symbols": [
-        "CompilerTarget"
       ],
       "type": "import"
     },
@@ -2959,15 +2943,6 @@
       "type": "import"
     },
     {
-      "source": "src/reviewer/graph-overlay.ts",
-      "target": "src/types/review.ts",
-      "symbols": [
-        "NewEdge",
-        "ComplexityChange"
-      ],
-      "type": "import"
-    },
-    {
       "source": "src/reviewer/pattern-suggester.ts",
       "target": "src/types/analysis.ts",
       "symbols": [
@@ -3116,14 +3091,6 @@
       "target": "src/types/config.ts",
       "symbols": [
         "DEFAULT_CONFIG"
-      ],
-      "type": "import"
-    },
-    {
-      "source": "src/utils/config.ts",
-      "target": "src/types/config.ts",
-      "symbols": [
-        "AukConfig"
       ],
       "type": "import"
     },
@@ -3292,6 +3259,16 @@
       "target": "src/types/analysis.ts",
       "symbols": [
         "FileEntry"
+      ],
+      "type": "import"
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts",
+      "target": "src/analyzer/import-graph.ts",
+      "symbols": [
+        "buildResolverContext",
+        "resolveImport",
+        "resolveImportTargets"
       ],
       "type": "import"
     },
@@ -3656,6 +3633,7 @@
     "test": [
       "tests/analyzer/call-graph.test.ts",
       "tests/analyzer/parser.test.ts",
+      "tests/analyzer/resolver.test.ts",
       "tests/analyzer/scanner.test.ts",
       "tests/analyzer/ts-parser.test.ts",
       "tests/compiler/targets.test.ts",
@@ -3694,7 +3672,7 @@
       "from": "utility",
       "to": "model",
       "allowed": false,
-      "violations": 2
+      "violations": 1
     },
     {
       "from": "test",
@@ -3820,19 +3798,49 @@
       "endLine": 170
     },
     {
+      "id": "src/analyzer/import-graph.ts#aliasBase",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "aliasBase",
+      "kind": "function",
+      "exported": true,
+      "line": 132,
+      "metrics": {
+        "fanIn": 1,
+        "fanOut": 2,
+        "bodySize": 1,
+        "complexity": 1
+      },
+      "endLine": 132
+    },
+    {
       "id": "src/analyzer/import-graph.ts#buildImportGraph",
       "file": "src/analyzer/import-graph.ts",
       "name": "buildImportGraph",
       "kind": "function",
       "exported": true,
-      "line": 44,
+      "line": 171,
       "metrics": {
         "fanIn": 1,
-        "fanOut": 26,
-        "bodySize": 74,
-        "complexity": 22
+        "fanOut": 29,
+        "bodySize": 80,
+        "complexity": 24
       },
-      "endLine": 117
+      "endLine": 250
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#buildResolverContext",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "buildResolverContext",
+      "kind": "function",
+      "exported": true,
+      "line": 102,
+      "metrics": {
+        "fanIn": 4,
+        "fanOut": 25,
+        "bodySize": 50,
+        "complexity": 17
+      },
+      "endLine": 151
     },
     {
       "id": "src/analyzer/import-graph.ts#detectBoundaries",
@@ -3840,14 +3848,14 @@
       "name": "detectBoundaries",
       "kind": "function",
       "exported": false,
-      "line": 120,
+      "line": 253,
       "metrics": {
         "fanIn": 1,
         "fanOut": 8,
         "bodySize": 52,
         "complexity": 10
       },
-      "endLine": 171
+      "endLine": 304
     },
     {
       "id": "src/analyzer/import-graph.ts#detectCircularDeps",
@@ -3855,14 +3863,14 @@
       "name": "detectCircularDeps",
       "kind": "function",
       "exported": true,
-      "line": 174,
+      "line": 307,
       "metrics": {
         "fanIn": 1,
         "fanOut": 9,
         "bodySize": 41,
         "complexity": 9
       },
-      "endLine": 214
+      "endLine": 347
     },
     {
       "id": "src/analyzer/import-graph.ts#dfs",
@@ -3870,14 +3878,14 @@
       "name": "dfs",
       "kind": "function",
       "exported": true,
-      "line": 187,
+      "line": 320,
       "metrics": {
         "fanIn": 1,
         "fanOut": 12,
         "bodySize": 21,
         "complexity": 6
       },
-      "endLine": 207
+      "endLine": 340
     },
     {
       "id": "src/analyzer/import-graph.ts#findHubFiles",
@@ -3885,14 +3893,89 @@
       "name": "findHubFiles",
       "kind": "function",
       "exported": true,
-      "line": 217,
+      "line": 350,
       "metrics": {
         "fanIn": 0,
         "fanOut": 2,
         "bodySize": 5,
         "complexity": 1
       },
-      "endLine": 221
+      "endLine": 354
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#matchFile",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "matchFile",
+      "kind": "function",
+      "exported": false,
+      "line": 78,
+      "metrics": {
+        "fanIn": 2,
+        "fanOut": 4,
+        "bodySize": 17,
+        "complexity": 8
+      },
+      "endLine": 94
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#normalizeRel",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "normalizeRel",
+      "kind": "function",
+      "exported": false,
+      "line": 153,
+      "metrics": {
+        "fanIn": 1,
+        "fanOut": 3,
+        "bodySize": 3,
+        "complexity": 1
+      },
+      "endLine": 155
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#posixDirname",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "posixDirname",
+      "kind": "function",
+      "exported": false,
+      "line": 96,
+      "metrics": {
+        "fanIn": 1,
+        "fanOut": 2,
+        "bodySize": 4,
+        "complexity": 2
+      },
+      "endLine": 99
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#readJsonLoose",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "readJsonLoose",
+      "kind": "function",
+      "exported": false,
+      "line": 159,
+      "metrics": {
+        "fanIn": 1,
+        "fanOut": 5,
+        "bodySize": 10,
+        "complexity": 3
+      },
+      "endLine": 168
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#readText",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "readText",
+      "kind": "function",
+      "exported": false,
+      "line": 156,
+      "metrics": {
+        "fanIn": 2,
+        "fanOut": 1,
+        "bodySize": 3,
+        "complexity": 2
+      },
+      "endLine": 158
     },
     {
       "id": "src/analyzer/import-graph.ts#resolveImport",
@@ -3900,14 +3983,42 @@
       "name": "resolveImport",
       "kind": "function",
       "exported": true,
-      "line": 11,
+      "line": 24,
       "metrics": {
-        "fanIn": 2,
-        "fanOut": 10,
-        "bodySize": 31,
-        "complexity": 10
+        "fanIn": 4,
+        "fanOut": 1,
+        "bodySize": 8,
+        "complexity": 1
       },
-      "endLine": 41
+      "endLine": 31
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "resolveImportTargets",
+      "kind": "function",
+      "exported": true,
+      "line": 35,
+      "metrics": {
+        "fanIn": 5,
+        "fanOut": 21,
+        "bodySize": 41,
+        "complexity": 16
+      },
+      "endLine": 75
+    },
+    {
+      "id": "src/analyzer/import-graph.ts#ResolverContext",
+      "file": "src/analyzer/import-graph.ts",
+      "name": "ResolverContext",
+      "kind": "interface",
+      "exported": true,
+      "line": 13,
+      "metrics": {
+        "fanIn": 0,
+        "fanOut": 0
+      },
+      "endLine": 18
     },
     {
       "id": "src/analyzer/layer-detector.ts#buildLayerMap",
@@ -8549,6 +8660,21 @@
       "endLine": 24
     },
     {
+      "id": "tests/analyzer/resolver.test.ts#mapOf",
+      "file": "tests/analyzer/resolver.test.ts",
+      "name": "mapOf",
+      "kind": "function",
+      "exported": false,
+      "line": 13,
+      "metrics": {
+        "fanIn": 5,
+        "fanOut": 2,
+        "bodySize": 3,
+        "complexity": 1
+      },
+      "endLine": 15
+    },
+    {
       "id": "tests/analyzer/ts-parser.test.ts#write",
       "file": "tests/analyzer/ts-parser.test.ts",
       "name": "write",
@@ -9719,473 +9845,872 @@
       "resolved": true
     },
     {
+      "source": "src/analyzer/import-graph.ts#aliasBase",
+      "target": "external:path.posix.join",
+      "kind": "call",
+      "line": 132,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#aliasBase",
+      "target": "src/analyzer/import-graph.ts#normalizeRel",
+      "kind": "call",
+      "line": 132,
+      "resolved": true
+    },
+    {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Array.from",
       "kind": "call",
-      "line": 112,
+      "line": 245,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Date",
       "kind": "instantiation",
-      "line": 111,
+      "line": 244,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:edges.push",
       "kind": "call",
-      "line": 74,
+      "line": 207,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:fileMap.set",
       "kind": "call",
-      "line": 51,
+      "line": 179,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:inDegree.get",
       "kind": "call",
-      "line": 90,
+      "line": 223,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:inDegree.get",
       "kind": "call",
-      "line": 94,
+      "line": 227,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:inDegree.get",
       "kind": "call",
-      "line": 96,
+      "line": 229,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:inDegree.set",
       "kind": "call",
-      "line": 90,
+      "line": 223,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:layerMap.get",
       "kind": "call",
-      "line": 63,
+      "line": 191,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:layers[layer].push",
       "kind": "call",
-      "line": 103,
+      "line": 236,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 49,
+      "line": 177,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 55,
+      "line": 183,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 85,
+      "line": 218,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 86,
+      "line": 219,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:Math.max",
       "kind": "call",
-      "line": 96,
+      "line": 229,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:new Date().toISOString",
       "kind": "call",
-      "line": 111,
+      "line": 244,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:nodeMap.set",
       "kind": "call",
-      "line": 60,
+      "line": 188,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:nodeMap.values",
       "kind": "call",
-      "line": 112,
+      "line": 245,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:outDegree.get",
       "kind": "call",
-      "line": 89,
+      "line": 222,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:outDegree.get",
       "kind": "call",
-      "line": 94,
+      "line": 227,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:outDegree.get",
       "kind": "call",
-      "line": 96,
+      "line": 229,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:outDegree.set",
       "kind": "call",
-      "line": 89,
+      "line": 222,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:pf.symbols.filter",
       "kind": "call",
-      "line": 59,
+      "line": 187,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "external:pf.symbols.filter(s => s.exported).map",
       "kind": "call",
-      "line": 59,
+      "line": 187,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildImportGraph",
+      "target": "external:seenEdge.add",
+      "kind": "call",
+      "line": 206,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildImportGraph",
+      "target": "external:seenEdge.has",
+      "kind": "call",
+      "line": 205,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildImportGraph",
+      "target": "external:Set",
+      "kind": "instantiation",
+      "line": 198,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
       "target": "src/analyzer/import-graph.ts#detectBoundaries",
       "kind": "call",
-      "line": 107,
+      "line": 240,
       "resolved": true
     },
     {
       "source": "src/analyzer/import-graph.ts#buildImportGraph",
-      "target": "src/analyzer/import-graph.ts#resolveImport",
+      "target": "src/analyzer/import-graph.ts#resolveImportTargets",
       "kind": "call",
-      "line": 72,
+      "line": 201,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:(vals as string[])\n            .filter",
+      "kind": "call",
+      "line": 138,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:(vals as string[])\n            .filter(v => typeof v === 'string')\n            .map",
+      "kind": "call",
+      "line": 138,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:Array.isArray",
+      "kind": "call",
+      "line": 136,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:dirs.add",
+      "kind": "call",
+      "line": 110,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:dirs.add",
+      "kind": "call",
+      "line": 113,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:f.includes",
+      "kind": "call",
+      "line": 110,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:f.split",
+      "kind": "call",
+      "line": 109,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:f.split",
+      "kind": "call",
+      "line": 112,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:goMod.match",
+      "kind": "call",
+      "line": 122,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:goModules.push",
+      "kind": "call",
+      "line": 123,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:goModules.sort",
+      "kind": "call",
+      "line": 149,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:key.replace",
+      "kind": "call",
+      "line": 137,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:Object.entries",
+      "kind": "call",
+      "line": 135,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:parts.slice",
+      "kind": "call",
+      "line": 113,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:parts.slice(0, 2).join",
+      "kind": "call",
+      "line": 113,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 117,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 120,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 128,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:Set",
+      "kind": "instantiation",
+      "line": 107,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:tsAliases.push",
+      "kind": "call",
+      "line": 141,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:tsAliases.sort",
+      "kind": "call",
+      "line": 148,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "external:v.replace",
+      "kind": "call",
+      "line": 140,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "src/analyzer/import-graph.ts#aliasBase",
+      "kind": "call",
+      "line": 140,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "src/analyzer/import-graph.ts#readJsonLoose",
+      "kind": "call",
+      "line": 128,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#buildResolverContext",
+      "target": "src/analyzer/import-graph.ts#readText",
+      "kind": "call",
+      "line": 120,
       "resolved": true
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:boundaries.push",
       "kind": "call",
-      "line": 162,
+      "line": 295,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:boundaryCount.get",
       "kind": "call",
-      "line": 146,
+      "line": 279,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:boundaryCount.has",
       "kind": "call",
-      "line": 142,
+      "line": 275,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:boundaryCount.set",
       "kind": "call",
-      "line": 143,
+      "line": 276,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:key.split",
       "kind": "call",
-      "line": 160,
+      "line": 293,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:layerMap.get",
       "kind": "call",
-      "line": 135,
+      "line": 268,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:layerMap.get",
       "kind": "call",
-      "line": 136,
+      "line": 269,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectBoundaries",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 121,
+      "line": 254,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:adjacency.get",
       "kind": "call",
-      "line": 180,
+      "line": 313,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:adjacency.get(edge.source)!.push",
       "kind": "call",
-      "line": 180,
+      "line": 313,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:adjacency.has",
       "kind": "call",
-      "line": 179,
+      "line": 312,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:adjacency.keys",
       "kind": "call",
-      "line": 209,
+      "line": 342,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:adjacency.set",
       "kind": "call",
-      "line": 179,
+      "line": 312,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:Map",
       "kind": "instantiation",
-      "line": 176,
+      "line": 309,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:Set",
       "kind": "instantiation",
-      "line": 183,
+      "line": 316,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "external:Set",
       "kind": "instantiation",
-      "line": 184,
+      "line": 317,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#detectCircularDeps",
       "target": "src/analyzer/import-graph.ts#dfs",
       "kind": "call",
-      "line": 210,
+      "line": 343,
       "resolved": true
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:adjacency.get",
       "kind": "call",
-      "line": 201,
+      "line": 334,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:cycles.push",
       "kind": "call",
-      "line": 191,
+      "line": 324,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:inStack.add",
       "kind": "call",
-      "line": 198,
+      "line": 331,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:inStack.delete",
       "kind": "call",
-      "line": 206,
+      "line": 339,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:inStack.has",
       "kind": "call",
-      "line": 188,
+      "line": 321,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:path.indexOf",
       "kind": "call",
-      "line": 189,
+      "line": 322,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:path.pop",
       "kind": "call",
-      "line": 205,
+      "line": 338,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:path.push",
       "kind": "call",
-      "line": 199,
+      "line": 332,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:path.slice",
       "kind": "call",
-      "line": 191,
+      "line": 324,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:visited.add",
       "kind": "call",
-      "line": 197,
+      "line": 330,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "external:visited.has",
       "kind": "call",
-      "line": 195,
+      "line": 328,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#dfs",
       "target": "src/analyzer/import-graph.ts#dfs",
       "kind": "call",
-      "line": 202,
+      "line": 335,
       "resolved": true
     },
     {
       "source": "src/analyzer/import-graph.ts#findHubFiles",
       "target": "external:graph.nodes\n    .filter",
       "kind": "call",
-      "line": 218,
+      "line": 351,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#findHubFiles",
       "target": "external:graph.nodes\n    .filter(n => n.centrality.degree >= threshold)\n    .sort",
       "kind": "call",
-      "line": 218,
+      "line": 351,
       "resolved": false
     },
     {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
+      "source": "src/analyzer/import-graph.ts#matchFile",
       "target": "external:allFiles.has",
       "kind": "call",
-      "line": 28,
+      "line": 85,
       "resolved": false
     },
     {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
+      "source": "src/analyzer/import-graph.ts#matchFile",
       "target": "external:allFiles.has",
       "kind": "call",
-      "line": 36,
+      "line": 90,
       "resolved": false
     },
     {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
+      "source": "src/analyzer/import-graph.ts#matchFile",
       "target": "external:bases.push",
       "kind": "call",
-      "line": 21,
+      "line": 81,
       "resolved": false
     },
     {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
-      "target": "external:path.dirname",
-      "kind": "call",
-      "line": 15,
-      "resolved": false
-    },
-    {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
-      "target": "external:path.join",
-      "kind": "call",
-      "line": 16,
-      "resolved": false
-    },
-    {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
-      "target": "external:path.normalize",
-      "kind": "call",
-      "line": 16,
-      "resolved": false
-    },
-    {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
-      "target": "external:path.normalize(path.join(fromDir, source)).replace",
-      "kind": "call",
-      "line": 16,
-      "resolved": false
-    },
-    {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
+      "source": "src/analyzer/import-graph.ts#matchFile",
       "target": "external:resolved.replace",
       "kind": "call",
-      "line": 20,
+      "line": 80,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#normalizeRel",
+      "target": "external:p.replace",
+      "kind": "call",
+      "line": 154,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#normalizeRel",
+      "target": "external:p.replace(/^\\.\\//, '').replace",
+      "kind": "call",
+      "line": 154,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#normalizeRel",
+      "target": "external:p.replace(/^\\.\\//, '').replace(/\\/$/, '').replace",
+      "kind": "call",
+      "line": 154,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#posixDirname",
+      "target": "external:p.lastIndexOf",
+      "kind": "call",
+      "line": 97,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#posixDirname",
+      "target": "external:p.slice",
+      "kind": "call",
+      "line": 98,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readJsonLoose",
+      "target": "external:JSON.parse",
+      "kind": "call",
+      "line": 167,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readJsonLoose",
+      "target": "external:raw\n    .replace",
+      "kind": "call",
+      "line": 163,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readJsonLoose",
+      "target": "external:raw\n    .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')\n    .replace",
+      "kind": "call",
+      "line": 163,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readJsonLoose",
+      "target": "external:raw\n    .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')\n    .replace(/(^|[^:])\\/\\/.*$/gm, '$1')\n    .replace",
+      "kind": "call",
+      "line": 163,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readJsonLoose",
+      "target": "src/analyzer/import-graph.ts#readText",
+      "kind": "call",
+      "line": 160,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#readText",
+      "target": "external:fs.readFileSync",
+      "kind": "call",
+      "line": 157,
       "resolved": false
     },
     {
       "source": "src/analyzer/import-graph.ts#resolveImport",
-      "target": "external:source.startsWith",
+      "target": "src/analyzer/import-graph.ts#resolveImportTargets",
       "kind": "call",
-      "line": 13,
+      "line": 30,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:[mod.root, rest].filter",
+      "kind": "call",
+      "line": 66,
       "resolved": false
     },
     {
-      "source": "src/analyzer/import-graph.ts#resolveImport",
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:[mod.root, rest].filter(Boolean).join",
+      "kind": "call",
+      "line": 66,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:allFiles.keys",
+      "kind": "call",
+      "line": 68,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:f.endsWith",
+      "kind": "call",
+      "line": 69,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:path.dirname",
+      "kind": "call",
+      "line": 43,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 44,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:path.normalize",
+      "kind": "call",
+      "line": 44,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:path.normalize(path.join(fromDir, source)).replace",
+      "kind": "call",
+      "line": 44,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:path.posix.join",
+      "kind": "call",
+      "line": 56,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.slice",
+      "kind": "call",
+      "line": 54,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.slice",
+      "kind": "call",
+      "line": 65,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.slice(mod.prefix.length).replace",
+      "kind": "call",
+      "line": 65,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
       "target": "external:source.startsWith",
       "kind": "call",
-      "line": 13,
+      "line": 42,
       "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.startsWith",
+      "kind": "call",
+      "line": 42,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.startsWith",
+      "kind": "call",
+      "line": 53,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:source.startsWith",
+      "kind": "call",
+      "line": 64,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:targets.push",
+      "kind": "call",
+      "line": 69,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "external:targets.sort",
+      "kind": "call",
+      "line": 71,
+      "resolved": false
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "src/analyzer/import-graph.ts#matchFile",
+      "kind": "call",
+      "line": 45,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "src/analyzer/import-graph.ts#matchFile",
+      "kind": "call",
+      "line": 57,
+      "resolved": true
+    },
+    {
+      "source": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "target": "src/analyzer/import-graph.ts#posixDirname",
+      "kind": "call",
+      "line": 69,
+      "resolved": true
     },
     {
       "source": "src/analyzer/layer-detector.ts#buildLayerMap",
@@ -16568,28 +17093,35 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "external:console.log",
       "kind": "call",
-      "line": 132,
+      "line": 133,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "external:console.log",
       "kind": "call",
-      "line": 138,
+      "line": 139,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "external:console.log",
       "kind": "call",
-      "line": 151,
+      "line": 152,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "external:console.log",
       "kind": "call",
-      "line": 153,
+      "line": 154,
+      "resolved": false
+    },
+    {
+      "source": "src/commands/generate.ts#<module>",
+      "target": "external:files.map",
+      "kind": "call",
+      "line": 57,
       "resolved": false
     },
     {
@@ -16631,7 +17163,7 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "external:parsedFiles.filter",
       "kind": "call",
-      "line": 69,
+      "line": 70,
       "resolved": false
     },
     {
@@ -16659,7 +17191,7 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "external:patterns.push",
       "kind": "call",
-      "line": 85,
+      "line": 86,
       "resolved": false
     },
     {
@@ -16673,33 +17205,40 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "external:semantic.clusters",
       "kind": "call",
-      "line": 84,
+      "line": 85,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "external:semantic.index",
       "kind": "call",
-      "line": 82,
+      "line": 83,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "external:semantic.serialize",
       "kind": "call",
-      "line": 83,
+      "line": 84,
       "resolved": false
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/analyzer/call-graph.ts#buildCallGraph",
       "kind": "call",
-      "line": 65,
+      "line": 66,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/analyzer/import-graph.ts#buildImportGraph",
+      "kind": "call",
+      "line": 58,
+      "resolved": true
+    },
+    {
+      "source": "src/commands/generate.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#buildResolverContext",
       "kind": "call",
       "line": 57,
       "resolved": true
@@ -16708,7 +17247,7 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/analyzer/import-graph.ts#detectCircularDeps",
       "kind": "call",
-      "line": 58,
+      "line": 59,
       "resolved": true
     },
     {
@@ -16736,14 +17275,14 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/analyzer/pattern-miner.ts#detectStructuralClusters",
       "kind": "call",
-      "line": 85,
+      "line": 86,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/analyzer/pattern-miner.ts#minePatterns",
       "kind": "call",
-      "line": 78,
+      "line": 79,
       "resolved": true
     },
     {
@@ -16757,35 +17296,35 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/compiler/compiler-engine.ts#compileRules",
       "kind": "call",
-      "line": 134,
+      "line": 135,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/generator/enhancement-validator.ts#preserveEnhancements",
       "kind": "call",
-      "line": 118,
+      "line": 119,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/generator/prompt-emitter.ts#emitPrompts",
       "kind": "call",
-      "line": 123,
+      "line": 124,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/generator/rule-synthesizer.ts#synthesizeRules",
       "kind": "call",
-      "line": 116,
+      "line": 117,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/semantic/similarity.ts#TfidfProvider",
       "kind": "instantiation",
-      "line": 81,
+      "line": 82,
       "resolved": true
     },
     {
@@ -16813,49 +17352,42 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/config.ts#saveJson",
       "kind": "call",
-      "line": 73,
+      "line": 74,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/config.ts#saveJson",
       "kind": "call",
-      "line": 83,
+      "line": 84,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/config.ts#saveYaml",
       "kind": "call",
-      "line": 119,
+      "line": 120,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#header",
       "kind": "call",
-      "line": 133,
+      "line": 134,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#header",
       "kind": "call",
-      "line": 139,
+      "line": 140,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#info",
       "kind": "call",
-      "line": 126,
-      "resolved": true
-    },
-    {
-      "source": "src/commands/generate.ts#<module>",
-      "target": "src/utils/logger.ts#keyValue",
-      "kind": "call",
-      "line": 140,
+      "line": 127,
       "resolved": true
     },
     {
@@ -16897,7 +17429,14 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#keyValue",
       "kind": "call",
-      "line": 148,
+      "line": 146,
+      "resolved": true
+    },
+    {
+      "source": "src/commands/generate.ts#<module>",
+      "target": "src/utils/logger.ts#keyValue",
+      "kind": "call",
+      "line": 149,
       "resolved": true
     },
     {
@@ -16932,14 +17471,14 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#step",
       "kind": "call",
-      "line": 77,
+      "line": 78,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#step",
       "kind": "call",
-      "line": 114,
+      "line": 115,
       "resolved": true
     },
     {
@@ -16960,35 +17499,35 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#success",
       "kind": "call",
-      "line": 74,
+      "line": 75,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#success",
       "kind": "call",
-      "line": 86,
+      "line": 87,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#success",
       "kind": "call",
-      "line": 120,
+      "line": 121,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#success",
       "kind": "call",
-      "line": 125,
+      "line": 126,
       "resolved": true
     },
     {
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#success",
       "kind": "call",
-      "line": 152,
+      "line": 153,
       "resolved": true
     },
     {
@@ -17002,7 +17541,7 @@
       "source": "src/commands/generate.ts#<module>",
       "target": "src/utils/logger.ts#warn",
       "kind": "call",
-      "line": 61,
+      "line": 62,
       "resolved": true
     },
     {
@@ -29333,6 +29872,321 @@
       "resolved": false
     },
     {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.deepStrictEqual",
+      "kind": "call",
+      "line": 42,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.deepStrictEqual",
+      "kind": "call",
+      "line": 66,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.deepStrictEqual",
+      "kind": "call",
+      "line": 67,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.strictEqual",
+      "kind": "call",
+      "line": 20,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.strictEqual",
+      "kind": "call",
+      "line": 21,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:assert.strictEqual",
+      "kind": "call",
+      "line": 60,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:describe",
+      "kind": "call",
+      "line": 17,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.mkdirSync",
+      "kind": "call",
+      "line": 26,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.mkdirSync",
+      "kind": "call",
+      "line": 51,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.mkdtempSync",
+      "kind": "call",
+      "line": 25,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.mkdtempSync",
+      "kind": "call",
+      "line": 50,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.rmSync",
+      "kind": "call",
+      "line": 46,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.rmSync",
+      "kind": "call",
+      "line": 61,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.writeFileSync",
+      "kind": "call",
+      "line": 27,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:fs.writeFileSync",
+      "kind": "call",
+      "line": 52,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:it",
+      "kind": "call",
+      "line": 18,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:it",
+      "kind": "call",
+      "line": 24,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:it",
+      "kind": "call",
+      "line": 49,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:it",
+      "kind": "call",
+      "line": 64,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:JSON.stringify",
+      "kind": "call",
+      "line": 54,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:os.tmpdir",
+      "kind": "call",
+      "line": 25,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:os.tmpdir",
+      "kind": "call",
+      "line": 50,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 25,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 26,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 27,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 50,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 51,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:path.join",
+      "kind": "call",
+      "line": 53,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "external:targets.sort",
+      "kind": "call",
+      "line": 42,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#buildResolverContext",
+      "kind": "call",
+      "line": 34,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#buildResolverContext",
+      "kind": "call",
+      "line": 58,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#buildResolverContext",
+      "kind": "call",
+      "line": 65,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImport",
+      "kind": "call",
+      "line": 20,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImport",
+      "kind": "call",
+      "line": 21,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImport",
+      "kind": "call",
+      "line": 59,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "kind": "call",
+      "line": 35,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "kind": "call",
+      "line": 66,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "src/analyzer/import-graph.ts#resolveImportTargets",
+      "kind": "call",
+      "line": 67,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "tests/analyzer/resolver.test.ts#mapOf",
+      "kind": "call",
+      "line": 19,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "tests/analyzer/resolver.test.ts#mapOf",
+      "kind": "call",
+      "line": 38,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "tests/analyzer/resolver.test.ts#mapOf",
+      "kind": "call",
+      "line": 59,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "tests/analyzer/resolver.test.ts#mapOf",
+      "kind": "call",
+      "line": 66,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#<module>",
+      "target": "tests/analyzer/resolver.test.ts#mapOf",
+      "kind": "call",
+      "line": 67,
+      "resolved": true
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#mapOf",
+      "target": "external:Map",
+      "kind": "instantiation",
+      "line": 14,
+      "resolved": false
+    },
+    {
+      "source": "tests/analyzer/resolver.test.ts#mapOf",
+      "target": "external:paths.map",
+      "kind": "call",
+      "line": 14,
+      "resolved": false
+    },
+    {
       "source": "tests/analyzer/scanner.test.ts#<module>",
       "target": "external:describe",
       "kind": "call",
@@ -34402,7 +35256,7 @@
     }
   ],
   "parserCoverage": {
-    "treeSitter": 92,
+    "treeSitter": 93,
     "regex": 0
   }
 }

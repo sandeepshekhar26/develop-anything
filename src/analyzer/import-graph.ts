@@ -3,47 +3,175 @@
 // Import/Export dependency graph builder
 // ============================================================
 
+import * as fs from 'fs';
 import * as path from 'path';
 import type { ParsedFile, ImportEdge, GraphNode, DependencyGraph, ArchLayer, LayerBoundary } from '../types/analysis.js';
 import { logger } from '../utils/logger.js';
 
-/** Resolve an import source to a file path (shared with the call-graph builder) */
-export function resolveImport(source: string, fromFile: string, allFiles: Map<string, string>): string | null {
-  // Skip external packages
-  if (!source.startsWith('.') && !source.startsWith('/')) return null;
+/** Context for resolving non-relative imports (Go modules, TS path aliases).
+    Built once per project from go.mod / tsconfig.json. */
+export interface ResolverContext {
+  /** Go module prefix → repo-relative dir of its go.mod (e.g. "github.com/me/app" → "backend") */
+  goModules: Array<{ prefix: string; root: string }>;
+  /** TS/JS path aliases (e.g. "@/" → ["frontend/src"]) */
+  tsAliases: Array<{ prefix: string; targets: string[] }>;
+}
 
-  const fromDir = path.dirname(fromFile);
-  const resolved = path.normalize(path.join(fromDir, source)).replace(/\\/g, '/');
+const EXTENSIONS = ['', '.ts', '.tsx', '.js', '.jsx', '.mjs', '.py', '.go', '.rs', '.java', '.rb', '.php'];
+const INDEX_FILES = ['index.ts', 'index.js', 'index.tsx', 'index.jsx', '__init__.py', 'mod.rs'];
 
-  // ESM TypeScript convention: `./foo.js` on disk is `./foo.ts`
+/** Resolve an import to a single file path (first match). Kept for the call-graph builder. */
+export function resolveImport(
+  source: string,
+  fromFile: string,
+  allFiles: Map<string, string>,
+  ctx?: ResolverContext,
+): string | null {
+  return resolveImportTargets(source, fromFile, allFiles, ctx)[0] ?? null;
+}
+
+/** Resolve an import to all matching file paths. A Go package import maps to
+    every source file in that package directory, so this can return several. */
+export function resolveImportTargets(
+  source: string,
+  fromFile: string,
+  allFiles: Map<string, string>,
+  ctx?: ResolverContext,
+): string[] {
+  // 1. Relative / absolute imports
+  if (source.startsWith('.') || source.startsWith('/')) {
+    const fromDir = path.dirname(fromFile);
+    const resolved = path.normalize(path.join(fromDir, source)).replace(/\\/g, '/');
+    const hit = matchFile(resolved, allFiles);
+    return hit ? [hit] : [];
+  }
+
+  if (!ctx) return [];
+
+  // 2. TS/JS path aliases (e.g. "@/components/Button")
+  for (const alias of ctx.tsAliases) {
+    if (!source.startsWith(alias.prefix)) continue;
+    const rest = source.slice(alias.prefix.length);
+    for (const target of alias.targets) {
+      const candidate = path.posix.join(target, rest);
+      const hit = matchFile(candidate, allFiles);
+      if (hit) return [hit];
+    }
+  }
+
+  // 3. Go module package imports → all .go files in the package directory
+  for (const mod of ctx.goModules) {
+    if (source !== mod.prefix && !source.startsWith(mod.prefix + '/')) continue;
+    const rest = source.slice(mod.prefix.length).replace(/^\//, '');
+    const pkgDir = [mod.root, rest].filter(Boolean).join('/');
+    const targets: string[] = [];
+    for (const f of allFiles.keys()) {
+      if (f.endsWith('.go') && posixDirname(f) === pkgDir) targets.push(f);
+    }
+    if (targets.length > 0) return targets.sort();
+  }
+
+  return [];
+}
+
+/** Try a base path against the file map: exact, .js→.ts swap, extensions, index files. */
+function matchFile(resolved: string, allFiles: Map<string, string>): string | null {
   const bases = [resolved];
   const stripped = resolved.replace(/\.(js|jsx|mjs|cjs)$/, '');
   if (stripped !== resolved) bases.push(stripped);
 
-  // Try exact match, then with extensions
-  const extensions = ['', '.ts', '.tsx', '.js', '.jsx', '.mjs', '.py', '.go', '.rs', '.java', '.rb', '.php'];
   for (const base of bases) {
-    for (const ext of extensions) {
-      const candidate = base + ext;
-      if (allFiles.has(candidate)) return candidate;
+    for (const ext of EXTENSIONS) {
+      if (allFiles.has(base + ext)) return base + ext;
     }
   }
-
-  // Try index files
   for (const base of bases) {
-    for (const indexFile of ['index.ts', 'index.js', 'index.tsx', '__init__.py', 'mod.rs']) {
-      const candidate = base + '/' + indexFile;
-      if (allFiles.has(candidate)) return candidate;
+    for (const indexFile of INDEX_FILES) {
+      if (allFiles.has(base + '/' + indexFile)) return base + '/' + indexFile;
     }
   }
-
   return null;
+}
+
+function posixDirname(p: string): string {
+  const i = p.lastIndexOf('/');
+  return i < 0 ? '' : p.slice(0, i);
+}
+
+/** Build the resolver context by reading go.mod and tsconfig.json files. */
+export function buildResolverContext(projectRoot: string, filePaths: string[]): ResolverContext {
+  const goModules: Array<{ prefix: string; root: string }> = [];
+  const tsAliases: Array<{ prefix: string; targets: string[] }> = [];
+
+  // Candidate config locations: repo root + each top-level directory.
+  const dirs = new Set<string>(['']);
+  for (const f of filePaths) {
+    const top = f.split('/')[0];
+    if (top && f.includes('/')) dirs.add(top);
+    // also second level (e.g. apps/web)
+    const parts = f.split('/');
+    if (parts.length > 2) dirs.add(parts.slice(0, 2).join('/'));
+  }
+
+  for (const dir of dirs) {
+    const base = dir ? path.join(projectRoot, dir) : projectRoot;
+
+    // go.mod → module prefix rooted at this dir
+    const goMod = readText(path.join(base, 'go.mod'));
+    if (goMod) {
+      const m = goMod.match(/^module\s+(\S+)/m);
+      if (m) goModules.push({ prefix: m[1], root: dir });
+    }
+
+    // tsconfig.json / jsconfig.json → baseUrl + paths
+    for (const name of ['tsconfig.json', 'jsconfig.json']) {
+      const cfg = readJsonLoose(path.join(base, name));
+      const opts = cfg?.compilerOptions;
+      if (!opts) continue;
+      const baseUrl = typeof opts.baseUrl === 'string' ? opts.baseUrl : '.';
+      const aliasBase = (rel: string) => normalizeRel(path.posix.join(dir, baseUrl, rel));
+      const paths = opts.paths;
+      if (paths && typeof paths === 'object') {
+        for (const [key, vals] of Object.entries(paths)) {
+          if (!Array.isArray(vals)) continue;
+          const prefix = key.replace(/\*$/, '');
+          const targets = (vals as string[])
+            .filter(v => typeof v === 'string')
+            .map(v => aliasBase(v.replace(/\*$/, '')));
+          if (targets.length > 0) tsAliases.push({ prefix, targets });
+        }
+      }
+    }
+  }
+
+  // Longest prefixes first so "@/foo" beats a shorter "@/" if both exist.
+  tsAliases.sort((a, b) => b.prefix.length - a.prefix.length);
+  goModules.sort((a, b) => b.prefix.length - a.prefix.length);
+  return { goModules, tsAliases };
+}
+
+function normalizeRel(p: string): string {
+  return p.replace(/^\.\//, '').replace(/\/$/, '').replace(/\\/g, '/');
+}
+function readText(p: string): string | undefined {
+  try { return fs.readFileSync(p, 'utf-8'); } catch { return undefined; }
+}
+function readJsonLoose(p: string): any {
+  const raw = readText(p);
+  if (!raw) return undefined;
+  // tsconfig allows comments + trailing commas; strip them best-effort.
+  const cleaned = raw
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1')
+    .replace(/,(\s*[}\]])/g, '$1');
+  try { return JSON.parse(cleaned); } catch { return undefined; }
 }
 
 /** Build the import dependency graph */
 export function buildImportGraph(
   parsedFiles: ParsedFile[],
-  layerMap: Map<string, ArchLayer>
+  layerMap: Map<string, ArchLayer>,
+  ctx?: ResolverContext
 ): DependencyGraph {
   // Build file lookup
   const fileMap = new Map<string, string>();
@@ -67,10 +195,15 @@ export function buildImportGraph(
   }
 
   // Build edges
+  const seenEdge = new Set<string>();
   for (const pf of parsedFiles) {
     for (const imp of pf.imports) {
-      const resolvedTarget = resolveImport(imp.source, pf.entry.path, fileMap);
-      if (resolvedTarget) {
+      const targets = resolveImportTargets(imp.source, pf.entry.path, fileMap, ctx);
+      for (const resolvedTarget of targets) {
+        if (resolvedTarget === pf.entry.path) continue; // no self-edges
+        const key = pf.entry.path + '\0' + resolvedTarget;
+        if (seenEdge.has(key)) continue;
+        seenEdge.add(key);
         edges.push({
           source: pf.entry.path,
           target: resolvedTarget,

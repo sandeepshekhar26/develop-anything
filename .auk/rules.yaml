@@ -1,5 +1,5 @@
 version: 1
-generatedAt: 2026-06-11T16:32:55.552Z
+generatedAt: 2026-06-11T17:08:29.954Z
 healthScore: 100
 project:
   name: auk
@@ -8,7 +8,7 @@ project:
     - javascript
   framework: Express
 overview:
-  summary: "`auk` is a codebase (92 source files, primarily typescript/javascript)."
+  summary: "`auk` is a codebase (93 source files, primarily typescript/javascript)."
   stack: []
   entrypoints:
     - path: dist/index.js
@@ -30,13 +30,13 @@ overview:
       role: source — 5 files, mostly typescript
     - path: src/types/
       role: type definitions — 5 files, mostly typescript
+    - path: tests/analyzer/
+      role: source — 5 files, mostly typescript
     - path: scripts/
       role: build/dev scripts — 4 files, mostly javascript
     - path: src/semantic/
       role: source — 4 files, mostly typescript
     - path: src/verifier/
-      role: source — 4 files, mostly typescript
-    - path: tests/analyzer/
       role: source — 4 files, mostly typescript
   commands:
     - label: Dev (frontend)
@@ -54,13 +54,13 @@ rules:
     category: architecture
     severity: critical
     priority: 84
-    description: Utility layer should not import from Model layer. 2 existing violations are known tech debt — don't add more.
+    description: Utility layer should not import from Model layer. 1 existing violation is known tech debt — don't add more.
     evidence: []
     verification:
       type: import-constraint
       source: utility/**
       forbidden: model/**
-      knownViolations: 2
+      knownViolations: 1
     confidence: 0.9
   - id: naming-functions-camelcase
     category: naming
@@ -92,11 +92,11 @@ rules:
       - file: src/analyzer/call-graph.ts
         line: 21
         note: Example of this pattern
-      - file: src/analyzer/parser-interface.ts
-        line: 9
+      - file: src/analyzer/import-graph.ts
+        line: 13
         note: Example of this pattern
       - file: src/analyzer/parser-interface.ts
-        line: 15
+        line: 9
         note: Example of this pattern
     verification:
       type: naming-convention
@@ -114,7 +114,7 @@ rules:
         note: Example of this pattern
       - file: tests/analyzer/parser.test.ts
         note: Example of this pattern
-      - file: tests/analyzer/scanner.test.ts
+      - file: tests/analyzer/resolver.test.ts
         note: Example of this pattern
     verification:
       type: custom
@@ -228,8 +228,8 @@ rules:
     verification:
       type: no-pattern
       pattern: export default
-      threshold: 0.8152173913043478
-    confidence: 0.8152173913043478
+      threshold: 0.8064516129032258
+    confidence: 0.8064516129032258
   - id: imports-relative
     category: imports
     severity: warning
@@ -245,8 +245,8 @@ rules:
     verification:
       type: pattern-match
       pattern: from '.
-      threshold: 0.7446808510638298
-    confidence: 0.7446808510638298
+      threshold: 0.7336814621409922
+    confidence: 0.7336814621409922
   - id: types-prefer-interface
     category: types
     severity: warning
@@ -262,8 +262,8 @@ rules:
     verification:
       type: pattern-match
       pattern: "interface "
-      threshold: 0.7432432432432432
-    confidence: 0.7432432432432432
+      threshold: 0.7466666666666667
+    confidence: 0.7466666666666667
   - id: naming-files-kebab-case
     category: naming
     severity: info
@@ -278,13 +278,13 @@ rules:
         note: Example of this pattern
     verification:
       type: custom
-      threshold: 0.4673913043478261
-    confidence: 0.4673913043478261
+      threshold: 0.46236559139784944
+    confidence: 0.46236559139784944
   - id: patterns-function-length
     category: patterns
     severity: info
     priority: 31
-    description: 90% of functions in this codebase are 53 lines or shorter. Keep new functions in that range; extract helpers instead of growing bodies.
+    description: 90% of functions in this codebase are 52 lines or shorter. Keep new functions in that range; extract helpers instead of growing bodies.
     evidence: []
     verification:
       type: custom
@@ -306,17 +306,17 @@ rules:
       type: custom
       threshold: 0.13
     confidence: 0.13
-  - id: cluster-enhancement-enhancements
+  - id: cluster-assert-test
     category: patterns
     severity: info
     priority: 30
-    description: "5 files share the 'enhancement-enhancements' shape (key terms: enhancement, enhancements, generator). They share imports: ../types/rules.js, fs, path. New files of this kind should follow the same structure."
+    description: "5 files share the 'assert-test' shape (key terms: assert, test, node). They share imports: ../../src/types/analysis.js, fs, node:assert. New files of this kind should follow the same structure."
     evidence:
-      - file: src/commands/enhance.ts
+      - file: src/analyzer/call-graph.ts
         note: Example of this pattern
-      - file: src/commands/generate.ts
+      - file: tests/analyzer/call-graph.test.ts
         note: Example of this pattern
-      - file: src/generator/enhancement-validator.ts
+      - file: tests/analyzer/resolver.test.ts
         note: Example of this pattern
     verification:
       type: custom
@@ -338,22 +338,6 @@ rules:
       type: custom
       threshold: 0.04
     confidence: 0.04
-  - id: cluster-assert-test
-    category: patterns
-    severity: info
-    priority: 30
-    description: "4 files share the 'assert-test' shape (key terms: assert, test, call). They share imports: ../../src/analyzer/parser.js, ../../src/types/analysis.js, fs. New files of this kind should follow the same structure."
-    evidence:
-      - file: src/analyzer/call-graph.ts
-        note: Example of this pattern
-      - file: tests/analyzer/call-graph.test.ts
-        note: Example of this pattern
-      - file: tests/analyzer/ts-parser.test.ts
-        note: Example of this pattern
-    verification:
-      type: custom
-      threshold: 0.04
-    confidence: 0.04
   - id: cluster-config-auk
     category: patterns
     severity: info
@@ -365,6 +349,22 @@ rules:
       - file: src/commands/badge.ts
         note: Example of this pattern
       - file: src/commands/init.ts
+        note: Example of this pattern
+    verification:
+      type: custom
+      threshold: 0.04
+    confidence: 0.04
+  - id: cluster-enhancement-enhancements
+    category: patterns
+    severity: info
+    priority: 30
+    description: "4 files share the 'enhancement-enhancements' shape (key terms: enhancement, enhancements, response). They share imports: ../types/rules.js, fs, path. New files of this kind should follow the same structure."
+    evidence:
+      - file: src/commands/enhance.ts
+        note: Example of this pattern
+      - file: src/generator/enhancement-validator.ts
+        note: Example of this pattern
+      - file: src/generator/prompt-emitter.ts
         note: Example of this pattern
     verification:
       type: custom

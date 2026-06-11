@@ -7,7 +7,7 @@
 // ============================================================
 
 import type { CallEdge, ParsedFile, SymbolNode } from '../types/analysis.js';
-import { resolveImport } from './import-graph.js';
+import { resolveImport, type ResolverContext } from './import-graph.js';
 
 const CALL_KIND: Record<string, CallEdge['kind']> = {
   call: 'call',
@@ -23,7 +23,7 @@ export interface CallGraph {
   callEdges: CallEdge[];
 }
 
-export function buildCallGraph(parsedFiles: ParsedFile[]): CallGraph {
+export function buildCallGraph(parsedFiles: ParsedFile[], ctx?: ResolverContext): CallGraph {
   const fileMap = new Map<string, string>();
   for (const pf of parsedFiles) fileMap.set(pf.entry.path, pf.entry.path);
 
@@ -62,7 +62,7 @@ export function buildCallGraph(parsedFiles: ParsedFile[]): CallGraph {
   for (const pf of parsedFiles) {
     const map = new Map<string, { file: string; isNamespace: boolean }>();
     for (const imp of pf.imports) {
-      const target = resolveImport(imp.source, pf.entry.path, fileMap);
+      const target = resolveImport(imp.source, pf.entry.path, fileMap, ctx);
       if (!target) continue;
       for (const name of imp.symbols) map.set(name, { file: target, isNamespace: imp.isNamespace });
     }

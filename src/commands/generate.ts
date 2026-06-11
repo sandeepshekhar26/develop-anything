@@ -12,7 +12,7 @@ import type { RulesFile } from '../types/rules.js';
 import { scanDirectory } from '../analyzer/scanner.js';
 import { parseFiles } from '../analyzer/parser.js';
 import { classifyFiles, buildLayerMap } from '../analyzer/layer-detector.js';
-import { buildImportGraph, detectCircularDeps } from '../analyzer/import-graph.js';
+import { buildImportGraph, detectCircularDeps, buildResolverContext } from '../analyzer/import-graph.js';
 import { buildCallGraph } from '../analyzer/call-graph.js';
 import { minePatterns, detectStructuralClusters } from '../analyzer/pattern-miner.js';
 import { TfidfProvider } from '../semantic/similarity.js';
@@ -54,7 +54,8 @@ export const generateCommand = new Command('generate')
     logger.step(3, 5, 'Analyzing architecture...');
     const layerClassifications = classifyFiles(parsedFiles);
     const layerMap = buildLayerMap(layerClassifications);
-    const graph = buildImportGraph(parsedFiles, layerMap);
+    const resolverCtx = buildResolverContext(projectRoot, files.map(f => f.path));
+    const graph = buildImportGraph(parsedFiles, layerMap, resolverCtx);
     const cycles = detectCircularDeps(graph);
 
     if (cycles.length > 0) {
@@ -62,7 +63,7 @@ export const generateCommand = new Command('generate')
     }
 
     // Symbol-level call graph (v2)
-    const callGraph = buildCallGraph(parsedFiles);
+    const callGraph = buildCallGraph(parsedFiles, resolverCtx);
     graph.version = 2;
     graph.symbols = callGraph.symbols;
     graph.callEdges = callGraph.callEdges;
