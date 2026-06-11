@@ -41,8 +41,9 @@ export const decisionsCommand = new Command('decisions')
     }
 
     if (options.show) {
+      const show = String(options.show);
       const data = await loadDecisions(projectRoot);
-      const decision = data.decisions.find(d => d.id === options.show || d.id.includes(options.show));
+      const decision = data.decisions.find(d => d.id === show || d.id.includes(show));
       if (decision) {
         printDecisionDetail(decision);
       } else {

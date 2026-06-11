@@ -32,10 +32,11 @@ export const reviewCommand = new Command('review')
 
     // Get diff
     let diffOutput: string;
-    const diffBase = options.diff || 'staged';
+    const diffRef = options.diff as string | undefined;
+    const diffBase = diffRef || 'staged';
 
-    if (options.diff) {
-      diffOutput = gitOps.getDiffBetween(options.diff, 'HEAD', projectRoot);
+    if (diffRef) {
+      diffOutput = gitOps.getDiffBetween(diffRef, 'HEAD', projectRoot);
     } else {
       // Review staged changes by default
       diffOutput = gitOps.getDiff(undefined, projectRoot);

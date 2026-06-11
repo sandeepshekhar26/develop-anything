@@ -5,24 +5,37 @@
 // `npx auk` must never hard-fail because of wasm.
 // ============================================================
 
-import { Parser, Language as TSLanguage, Query } from 'web-tree-sitter';
+// Type-only imports are erased at compile time, so they never trigger module
+// resolution. The runtime values are loaded via dynamic import() inside
+// initRuntime() — that way a missing/broken `web-tree-sitter` degrades to the
+// regex parser instead of crashing the CLI at startup.
+import type { Parser as ParserType, Language as TSLanguage, Query as QueryType } from 'web-tree-sitter';
 import { resolveAsset } from '../../utils/assets.js';
 import { logger } from '../../utils/logger.js';
 import { GRAMMARS } from './queries.js';
 
-let runtimeReady: Promise<boolean> | null = null;
-const languages = new Map<string, TSLanguage | null>();
-const queries = new Map<string, Query>();
+type TreeSitterModule = typeof import('web-tree-sitter');
 
-/** Initialize the tree-sitter wasm runtime once. Returns false on failure. */
+let runtimeReady: Promise<boolean> | null = null;
+let ts: TreeSitterModule | null = null;   // resolved module, set once ready
+const languages = new Map<string, TSLanguage | null>();
+const queries = new Map<string, QueryType>();
+
+/** Initialize the tree-sitter wasm runtime once. Returns false on failure
+    (missing package, wasm init error, …) so callers fall back to regex. */
 export function initRuntime(): Promise<boolean> {
   if (!runtimeReady) {
-    runtimeReady = Parser.init()
-      .then(() => true)
-      .catch((err) => {
+    runtimeReady = (async () => {
+      try {
+        ts = await import('web-tree-sitter');
+        await ts.Parser.init();
+        return true;
+      } catch (err) {
         logger.debug(`tree-sitter runtime unavailable, using regex parser: ${err}`);
+        ts = null;
         return false;
-      });
+      }
+    })();
   }
   return runtimeReady;
 }
@@ -32,8 +45,8 @@ export async function loadGrammar(key: string): Promise<TSLanguage | null> {
   if (languages.has(key)) return languages.get(key)!;
   let lang: TSLanguage | null = null;
   try {
-    if (await initRuntime()) {
-      lang = await TSLanguage.load(resolveAsset(GRAMMARS[key].wasm));
+    if (await initRuntime() && ts) {
+      lang = await ts.Language.load(resolveAsset(GRAMMARS[key].wasm));
     }
   } catch (err) {
     logger.debug(`grammar ${key} unavailable, falling back to regex: ${err}`);
@@ -43,12 +56,12 @@ export async function loadGrammar(key: string): Promise<TSLanguage | null> {
 }
 
 /** Compiled query for a loaded grammar (cached) */
-export function queryFor(key: string): Query | null {
+export function queryFor(key: string): QueryType | null {
   if (queries.has(key)) return queries.get(key)!;
   const lang = languages.get(key);
-  if (!lang) return null;
+  if (!lang || !ts) return null;
   try {
-    const q = new Query(lang, GRAMMARS[key].spec.query);
+    const q = new ts.Query(lang, GRAMMARS[key].spec.query);
     queries.set(key, q);
     return q;
   } catch (err) {
@@ -59,10 +72,10 @@ export function queryFor(key: string): Query | null {
 }
 
 /** Create a parser bound to a loaded grammar; null if grammar missing */
-export function createParser(key: string): Parser | null {
+export function createParser(key: string): ParserType | null {
   const lang = languages.get(key);
-  if (!lang) return null;
-  const p = new Parser();
+  if (!lang || !ts) return null;
+  const p = new ts.Parser();
   p.setLanguage(lang);
   return p;
 }

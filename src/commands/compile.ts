@@ -11,7 +11,7 @@ import { logger } from '../utils/logger.js';
 
 export const compileCommand = new Command('compile')
   .description('Compile rules.yaml to all enabled agent formats')
-  .option('--targets <targets>', 'Comma-separated list of targets', (v) => v.split(',') as CompilerTargetName[])
+  .option('--targets <targets>', 'Comma-separated list of targets', (v: string) => v.split(',') as CompilerTargetName[])
   .option('--dry-run', 'Preview output without writing files')
   .action(async (options) => {
     const projectRoot = process.cwd();
@@ -21,8 +21,8 @@ export const compileCommand = new Command('compile')
     logger.header('Compiling Rules');
 
     const outputs = await compileRules(projectRoot, config, {
-      dryRun: options.dryRun,
-      targets: options.targets,
+      dryRun: options.dryRun as boolean | undefined,
+      targets: options.targets as CompilerTargetName[] | undefined,
     });
 
     if (outputs.size === 0) {
