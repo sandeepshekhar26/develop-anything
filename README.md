@@ -59,6 +59,33 @@ npx auk-develop generate    # analyze code → rules → all agent formats
 
 That's it. Now every AI tool you use reads context derived from your real code.
 
+## Claude Code plugin (one-command deep pass)
+
+The CLI extracts the **facts** (parsing, call graph, clusters, conventions). The
+**depth** — rewriting each rule into sharp, codebase-specific guidance — is best
+done by an agent that can read your code. The Claude Code plugin makes that one
+command: *your* agent does the semantic pass, no API keys, no copy-paste.
+
+```text
+/plugin marketplace add sandeepshekhar26/develop-anything
+/plugin install auk@auk
+```
+
+Then, in any project:
+
+```text
+/auk:run        # full pipeline: analyze → agent deep-enhances every rule → compile every agent file
+/auk:enhance    # just the deep-enhance pass on existing rules, then recompile
+```
+
+`/auk:run` runs the analysis, reads `.auk/prompts/*` plus the cited code,
+rewrites the rules, applies them, and regenerates CLAUDE.md / AGENTS.md /
+`.cursor/rules` / copilot-instructions — all in one keystroke. If a command
+doesn't appear, run `/reload-plugins`.
+
+> **Other agents** (Cursor, Copilot, Codex, Gemini CLI…) can run the same
+> agent-agnostic loop — see [`plugins/README.md`](plugins/README.md).
+
 ## The commands
 
 | Command | What it does |
@@ -71,7 +98,7 @@ That's it. Now every AI tool you use reads context derived from your real code.
 | `auk badge` | Context-health badge for your README — like a coverage badge, but for AI context |
 | `auk mcp` | **Live MCP server.** Agents query your rules, graph, and decisions in real time instead of reading a static file |
 | `auk graph` | **Interactive graph viewer.** One self-contained HTML file (no CDN): force-directed dependency + call graph, colored by layer, with search and per-symbol fan-in/out. `--open` / `--serve` |
-| `auk enhance` | **LLM polish without API keys.** Emits prompt batches your own AI agent (Claude Code, Cursor, Copilot…) processes; auk schema-validates the response and merges it — verification logic stays untouchable |
+| `auk enhance` | **Agent deep-pass without API keys.** Emits prompt batches (with code excerpts + project context) that your own AI agent processes into codebase-specific rules; auk schema-validates and merges them — verification logic stays untouchable. In Claude Code, `/auk:enhance` automates the whole loop |
 
 ## Context rot detection
 
