@@ -39,6 +39,52 @@ export function minePatterns(parsedFiles: ParsedFile[]): DetectedPattern[] {
   return patterns.filter(p => p.prevalence >= 0.3); // Only keep patterns in 30%+ of files
 }
 
+/** Convert semantic file clusters into structural-shape patterns.
+    Only clusters whose members genuinely share structure (common imports
+    or a common layer-ish path segment) become patterns. */
+export function detectStructuralClusters(
+  parsedFiles: ParsedFile[],
+  clusters: Array<{ id: string; label: string; files: string[]; topTerms: string[]; cohesion: number }>
+): DetectedPattern[] {
+  const byPath = new Map(parsedFiles.map(pf => [pf.entry.path, pf]));
+  const patterns: DetectedPattern[] = [];
+
+  for (const cluster of clusters) {
+    if (cluster.files.length < 4) continue;
+    const members = cluster.files.map(f => byPath.get(f)).filter((p): p is ParsedFile => !!p);
+    if (members.length < 4) continue;
+
+    // shared imports: sources present in >= 50% of members
+    const importCounts = new Map<string, number>();
+    for (const m of members) {
+      for (const src of new Set(m.imports.map(i => i.source))) {
+        importCounts.set(src, (importCounts.get(src) ?? 0) + 1);
+      }
+    }
+    const sharedImports = [...importCounts.entries()]
+      .filter(([, c]) => c >= members.length * 0.5)
+      .map(([src]) => src)
+      .sort();
+
+    if (sharedImports.length === 0 && cluster.cohesion < 0.5) continue;
+
+    const sharedNote = sharedImports.length > 0
+      ? ` They share imports: ${sharedImports.slice(0, 3).join(', ')}.`
+      : '';
+    patterns.push({
+      id: `cluster-${cluster.label}`,
+      name: `Structural cluster: ${cluster.label}`,
+      category: 'patterns',
+      description: `${members.length} files share the '${cluster.label}' shape (key terms: ${cluster.topTerms.join(', ')}).${sharedNote} New files of this kind should follow the same structure.`,
+      prevalence: Math.round((members.length / parsedFiles.length) * 100) / 100,
+      examples: members.slice(0, 3).map(m => ({ file: m.entry.path })),
+      counterExamples: [],
+    });
+  }
+
+  return patterns;
+}
+
 /** Detect naming conventions (camelCase, PascalCase, snake_case) */
 function detectNamingConventions(files: ParsedFile[]): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];

@@ -9,7 +9,8 @@ import { gitOps } from '../utils/git.js';
 import { parseDiff } from '../reviewer/diff-parser.js';
 import { overlayDiffOnGraph } from '../reviewer/graph-overlay.js';
 import { detectViolations } from '../reviewer/violation-detector.js';
-import { suggestPatterns } from '../reviewer/pattern-suggester.js';
+import { suggestPatterns, suggestSimilarFiles } from '../reviewer/pattern-suggester.js';
+import type { SemanticIndexFile } from '../semantic/similarity.js';
 import { printReviewReport, generateMarkdownReview } from '../reviewer/review-reporter.js';
 import type { DependencyGraph } from '../types/analysis.js';
 import type { RulesFile } from '../types/rules.js';
@@ -73,6 +74,12 @@ export const reviewCommand = new Command('review')
     // Suggest patterns
     if (graph) {
       violations = suggestPatterns(violations, graph);
+    }
+
+    // Suggest similar existing files for newly added files
+    const semanticData = loadJson<SemanticIndexFile>('semantic.json', projectRoot);
+    if (semanticData) {
+      violations.push(...suggestSimilarFiles(diffFiles, semanticData, projectRoot));
     }
 
     // Build result

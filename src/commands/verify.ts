@@ -41,7 +41,7 @@ export const verifyCommand = new Command('verify')
     // Scan and parse
     const progress = logger.createProgress('Scanning and parsing codebase...');
     const files = await scanDirectory(projectRoot, config);
-    const parsedFiles = parseFiles(files);
+    const parsedFiles = await parseFiles(files);
     progress.stop(`Parsed ${files.length} files`);
 
     // Extract and verify claims

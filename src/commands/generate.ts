@@ -3,13 +3,19 @@
 // `auk generate` — analyze codebase and generate rules
 // ============================================================
 
+import * as path from 'path';
 import { Command } from '../utils/cli.js';
-import { loadConfig, saveYaml, saveJson, ensureAukDir } from '../utils/config.js';
+import { loadConfig, loadYaml, saveYaml, saveJson, ensureAukDir } from '../utils/config.js';
+import { preserveEnhancements } from '../generator/enhancement-validator.js';
+import { emitPrompts } from '../generator/prompt-emitter.js';
+import type { RulesFile } from '../types/rules.js';
 import { scanDirectory } from '../analyzer/scanner.js';
 import { parseFiles } from '../analyzer/parser.js';
 import { classifyFiles, buildLayerMap } from '../analyzer/layer-detector.js';
 import { buildImportGraph, detectCircularDeps } from '../analyzer/import-graph.js';
-import { minePatterns } from '../analyzer/pattern-miner.js';
+import { buildCallGraph } from '../analyzer/call-graph.js';
+import { minePatterns, detectStructuralClusters } from '../analyzer/pattern-miner.js';
+import { TfidfProvider } from '../semantic/similarity.js';
 import { synthesizeRules } from '../generator/rule-synthesizer.js';
 import { compileRules } from '../compiler/compiler-engine.js';
 import type { AnalysisResult } from '../types/analysis.js';
@@ -19,6 +25,7 @@ export const generateCommand = new Command('generate')
   .description('Analyze your codebase and generate context rules')
   .option('--compile', 'Also compile rules to all targets after generating', true)
   .option('--no-compile', 'Skip compilation step')
+  .option('--emit-prompts', 'Also write LLM enhancement prompts to .auk/prompts/')
   .action(async (options) => {
     const projectRoot = process.cwd();
     const config = await loadConfig(projectRoot);
@@ -38,7 +45,7 @@ export const generateCommand = new Command('generate')
 
     // Step 2: Parse
     logger.step(2, 5, 'Parsing source code...');
-    const parsedFiles = parseFiles(files);
+    const parsedFiles = await parseFiles(files, path.join(projectRoot, '.auk', 'cache.json'));
     const totalSymbols = parsedFiles.reduce((sum, f) => sum + f.symbols.length, 0);
     const totalImports = parsedFiles.reduce((sum, f) => sum + f.imports.length, 0);
     logger.success(`Extracted ${totalSymbols} symbols, ${totalImports} imports`);
@@ -54,14 +61,29 @@ export const generateCommand = new Command('generate')
       logger.warn(`Found ${cycles.length} circular dependencies`);
     }
 
+    // Symbol-level call graph (v2)
+    const callGraph = buildCallGraph(parsedFiles);
+    graph.version = 2;
+    graph.symbols = callGraph.symbols;
+    graph.callEdges = callGraph.callEdges;
+    const tsCount = parsedFiles.filter(f => f.parserUsed === 'tree-sitter').length;
+    graph.parserCoverage = { treeSitter: tsCount, regex: parsedFiles.length - tsCount };
+
     // Save graph
     saveJson('graph.json', graph, projectRoot);
-    logger.success(`Built dependency graph: ${graph.nodes.length} nodes, ${graph.edges.length} edges`);
+    logger.success(`Built dependency graph: ${graph.nodes.length} files, ${graph.edges.length} import edges, ${callGraph.symbols.length} symbols, ${callGraph.callEdges.length} call edges`);
 
     // Step 4: Mine patterns
     logger.step(4, 5, 'Mining conventions and patterns...');
     const patterns = minePatterns(parsedFiles);
-    logger.success(`Discovered ${patterns.length} conventions`);
+
+    // Semantic similarity index + structural clusters
+    const semantic = new TfidfProvider();
+    semantic.index(parsedFiles);
+    saveJson('semantic.json', semantic.serialize(), projectRoot);
+    const clusters = semantic.clusters();
+    patterns.push(...detectStructuralClusters(parsedFiles, clusters));
+    logger.success(`Discovered ${patterns.length} conventions${clusters.length > 0 ? ` (${clusters.length} structural clusters)` : ''}`);
 
     // Build analysis result
     const langBreakdown: Record<string, number> = {};
@@ -90,9 +112,19 @@ export const generateCommand = new Command('generate')
 
     // Step 5: Synthesize rules
     logger.step(5, 5, 'Synthesizing rules...');
+    const previousRules = await loadYaml<RulesFile>('rules.yaml', projectRoot);
     const rulesFile = synthesizeRules(analysis, config.project.name || 'project');
+    // carry LLM enhancements across regeneration (stale-marked if core changed)
+    preserveEnhancements(previousRules, rulesFile);
     await saveYaml('rules.yaml', rulesFile, projectRoot);
     logger.success(`Generated ${rulesFile.rules.length} rules → .auk/rules.yaml`);
+
+    if (options.emitPrompts) {
+      const promptFiles = emitPrompts(rulesFile, projectRoot);
+      if (promptFiles.length > 0) {
+        logger.success(`Wrote ${promptFiles.length} enhancement prompt batch${promptFiles.length > 1 ? 'es' : ''} → .auk/prompts/`);
+      }
+    }
 
     // Optional: Compile
     if (options.compile) {

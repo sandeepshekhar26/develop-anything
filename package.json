@@ -1,7 +1,7 @@
 {
   "name": "auk-develop",
   "version": "1.0.0",
-  "description": "The AI Context Engineering Platform \u2014 one command and every AI coding tool understands your codebase. Zero dependencies.",
+  "description": "The AI Context Engineering Platform \u2014 one command and every AI coding tool understands your codebase. Tree-sitter powered, near-zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -16,7 +16,8 @@
     "test": "node --experimental-strip-types --no-warnings --import ./scripts/ts-run.mjs --test \"tests/**/*.test.ts\"",
     "test:e2e": "node --experimental-strip-types --no-warnings --import ./scripts/ts-run.mjs --test \"tests/e2e/**/*.test.ts\"",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "vendor-grammars": "node scripts/vendor-grammars.mjs"
   },
   "keywords": [
     "ai",
@@ -60,9 +61,17 @@
     "README.md",
     "LICENSE"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "web-tree-sitter": "0.26.9"
+  },
   "devDependencies": {
     "@types/node": "^22.15.0",
+    "tree-sitter-go": "^0.25.0",
+    "tree-sitter-java": "^0.23.5",
+    "tree-sitter-javascript": "^0.25.0",
+    "tree-sitter-python": "^0.25.0",
+    "tree-sitter-rust": "^0.24.0",
+    "tree-sitter-typescript": "^0.23.2",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
   }

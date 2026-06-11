@@ -7,3 +7,6 @@ coverage/
 .env.local
 *.log
 .auk/cache/
+.auk/cache.json
+.auk/prompts/
+.auk/graph.html

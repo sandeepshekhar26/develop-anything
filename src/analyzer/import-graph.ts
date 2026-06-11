@@ -7,8 +7,8 @@ import * as path from 'path';
 import type { ParsedFile, ImportEdge, GraphNode, DependencyGraph, ArchLayer, LayerBoundary } from '../types/analysis.js';
 import { logger } from '../utils/logger.js';
 
-/** Resolve an import source to a file path */
-function resolveImport(source: string, fromFile: string, allFiles: Map<string, string>): string | null {
+/** Resolve an import source to a file path (shared with the call-graph builder) */
+export function resolveImport(source: string, fromFile: string, allFiles: Map<string, string>): string | null {
   // Skip external packages
   if (!source.startsWith('.') && !source.startsWith('/')) return null;
 

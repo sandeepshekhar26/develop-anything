@@ -27,12 +27,24 @@ export interface FileEntry {
 /** An extracted symbol (function, class, etc.) */
 export interface ExtractedSymbol {
   name: string;
-  type: 'function' | 'class' | 'interface' | 'type' | 'enum' | 'variable' | 'constant';
+  type: 'function' | 'class' | 'interface' | 'type' | 'enum' | 'variable' | 'constant' | 'method';
   exported: boolean;
   line: number;
   endLine?: number;
   parameters?: string[];
   returnType?: string;
+  parentSymbol?: string;     // owning class for methods
+  bodySize?: number;         // lines in body (tree-sitter only)
+  complexityHint?: number;   // branch-node count (tree-sitter only)
+}
+
+/** A call site extracted from a function/method body (tree-sitter only) */
+export interface CallSite {
+  caller: string;            // enclosing symbol ('' = module top level)
+  callee: string;            // callee as written ('foo' or 'obj.bar')
+  calleeRoot?: string;       // leftmost identifier for member calls
+  line: number;
+  kind: 'call' | 'new' | 'extends' | 'implements';
 }
 
 /** Import information */
@@ -59,6 +71,8 @@ export interface ParsedFile {
   exports: ExportInfo[];
   symbols: ExtractedSymbol[];
   comments: string[];         // notable comments
+  calls?: CallSite[];         // tree-sitter only
+  parserUsed?: 'tree-sitter' | 'regex';
 }
 
 /** An edge in the import graph */
@@ -81,6 +95,32 @@ export interface GraphNode {
   };
 }
 
+/** A symbol-level node in the call graph (v2) */
+export interface SymbolNode {
+  id: string;                // "src/a.ts#Class.method"
+  file: string;
+  name: string;
+  kind: 'function' | 'class' | 'method' | 'interface';
+  exported: boolean;
+  line: number;
+  endLine?: number;
+  metrics: {
+    fanIn: number;           // resolved inbound calls
+    fanOut: number;          // outbound calls (incl. unresolved)
+    bodySize?: number;
+    complexity?: number;
+  };
+}
+
+/** A symbol-level call edge (v2) */
+export interface CallEdge {
+  source: string;            // symbol id
+  target: string;            // symbol id, or "external:<name>"
+  kind: 'call' | 'instantiation' | 'inherits' | 'implements';
+  line: number;
+  resolved: boolean;
+}
+
 /** The complete dependency graph */
 export interface DependencyGraph {
   version: number;
@@ -89,6 +129,10 @@ export interface DependencyGraph {
   edges: ImportEdge[];
   layers: Record<ArchLayer, string[]>;
   boundaries: LayerBoundary[];
+  // v2 additions (absent in v1 graph.json files)
+  symbols?: SymbolNode[];
+  callEdges?: CallEdge[];
+  parserCoverage?: { treeSitter: number; regex: number };
 }
 
 /** Layer boundary rule */

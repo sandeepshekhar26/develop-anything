@@ -111,6 +111,85 @@ function generateArchRules(analysis: AnalysisResult): Rule[] {
   return rules;
 }
 
+/** Generate symbol-level rules from the call graph (v2 graphs only).
+    Gated on tree-sitter coverage so regex-only repos don't get noisy rules. */
+function generateCallGraphRules(analysis: AnalysisResult): Rule[] {
+  const graph = analysis.graph;
+  const symbols = graph.symbols ?? [];
+  const coverage = graph.parserCoverage;
+  if (symbols.length === 0 || !coverage) return [];
+  const total = coverage.treeSitter + coverage.regex;
+  if (total === 0 || coverage.treeSitter / total < 0.5) return [];
+
+  const rules: Rule[] = [];
+
+  // Hotspot functions: high resolved fan-in means high blast radius
+  const hotspots = symbols
+    .filter(s => s.metrics.fanIn >= 10 && (s.kind === 'function' || s.kind === 'method'))
+    .sort((a, b) => b.metrics.fanIn - a.metrics.fanIn);
+  for (const hs of hotspots.slice(0, 3)) {
+    rules.push({
+      id: `architecture-hotspot-${hs.id.replace(/[\/\.#]/g, '-')}`,
+      category: 'architecture',
+      severity: 'warning',
+      priority: 0,
+      description: `${hs.name} (${hs.file}) is called from ${hs.metrics.fanIn} places — changes here have a high blast radius. Keep its signature and behavior stable.`,
+      evidence: [{ file: hs.file, line: hs.line, note: `fan-in ${hs.metrics.fanIn}` }],
+      verification: { type: 'custom' },
+      confidence: 0.85,
+    });
+  }
+
+  // God classes: many methods drawing lots of inbound traffic
+  const methodsByClass = new Map<string, SymbolNodeLite[]>();
+  for (const s of symbols) {
+    if (s.kind !== 'method') continue;
+    const key = `${s.file}#${s.name.split('.')[0]}`;
+    if (!methodsByClass.has(key)) methodsByClass.set(key, []);
+    methodsByClass.get(key)!.push(s);
+  }
+  for (const s of symbols) {
+    if (s.kind !== 'class') continue;
+    const methods = methodsByClass.get(s.id) ?? [];
+    const totalFanIn = methods.reduce((n, m) => n + m.metrics.fanIn, s.metrics.fanIn);
+    if (methods.length >= 15 || totalFanIn >= 20) {
+      rules.push({
+        id: `architecture-god-class-${s.id.replace(/[\/\.#]/g, '-')}`,
+        category: 'architecture',
+        severity: 'warning',
+        priority: 0,
+        description: `${s.name} (${s.file}) has ${methods.length} methods and ${totalFanIn} inbound calls — it is becoming a god object. Don't add more responsibilities; split it instead.`,
+        evidence: [{ file: s.file, line: s.line, note: `${methods.length} methods, ${totalFanIn} inbound calls` }],
+        verification: { type: 'custom' },
+        confidence: 0.8,
+      });
+    }
+  }
+
+  // Function-length convention from the p90 of measured bodies
+  const sizes = symbols
+    .filter(s => (s.kind === 'function' || s.kind === 'method') && s.metrics.bodySize !== undefined)
+    .map(s => s.metrics.bodySize!)
+    .sort((a, b) => a - b);
+  if (sizes.length >= 20) {
+    const p90 = sizes[Math.floor(sizes.length * 0.9)];
+    rules.push({
+      id: 'patterns-function-length',
+      category: 'patterns',
+      severity: 'info',
+      priority: 0,
+      description: `90% of functions in this codebase are ${p90} lines or shorter. Keep new functions in that range; extract helpers instead of growing bodies.`,
+      evidence: [],
+      verification: { type: 'custom', threshold: 0.9 },
+      confidence: 0.75,
+    });
+  }
+
+  return rules;
+}
+
+type SymbolNodeLite = NonNullable<AnalysisResult['graph']['symbols']>[number];
+
 /** Synthesize rules from analysis results */
 export function synthesizeRules(analysis: AnalysisResult, projectName: string): RulesFile {
   logger.debug('Synthesizing rules from analysis...');
@@ -121,8 +200,11 @@ export function synthesizeRules(analysis: AnalysisResult, projectName: string): 
   // Generate architecture rules
   const archRules = generateArchRules(analysis);
 
+  // Generate symbol-level rules from the call graph
+  const callGraphRules = generateCallGraphRules(analysis);
+
   // Combine and rank
-  const allRules = [...archRules, ...patternRules];
+  const allRules = [...archRules, ...callGraphRules, ...patternRules];
   const rankedRules = rankRules(allRules, analysis);
 
   // Determine project languages

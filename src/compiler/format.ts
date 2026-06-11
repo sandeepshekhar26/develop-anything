@@ -9,6 +9,13 @@
 import type { Rule } from '../types/rules.js';
 import type { DecisionsFile } from '../types/decisions.js';
 
+/** Effective description: LLM-enhanced text when present and not stale */
+export function ruleDescription(rule: Rule): string {
+  return rule.enhanced && !rule.enhanced.stale
+    ? rule.enhanced.description
+    : rule.description;
+}
+
 /** Generate the header comment for compiled files */
 export function generateHeader(healthScore: number): string {
   const timestamp = new Date().toISOString();
@@ -51,8 +58,13 @@ export function formatRulesAsMarkdown(
       const severityIcon = rule.severity === 'critical' ? '🔴' : rule.severity === 'warning' ? '🟡' : 'ℹ️';
       lines.push(`### ${severityIcon} ${rule.id}`);
       lines.push('');
-      lines.push(rule.description.trim());
+      lines.push(ruleDescription(rule).trim());
       lines.push('');
+
+      if (rule.enhanced && !rule.enhanced.stale && rule.enhanced.rationale) {
+        lines.push(`**Why:** ${rule.enhanced.rationale.trim()}`);
+        lines.push('');
+      }
 
       if (includeEvidence && rule.evidence.length > 0) {
         lines.push('**Evidence:**');

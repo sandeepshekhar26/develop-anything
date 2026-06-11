@@ -8,7 +8,7 @@
 
 [![CI](https://github.com/sandeepshekhar26/develop-anything/actions/workflows/ci.yml/badge.svg)](https://github.com/sandeepshekhar26/develop-anything/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/auk-develop)](https://www.npmjs.com/package/auk-develop)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](package.json)
+[![Dependencies](https://img.shields.io/badge/dependencies-1%20(tree--sitter)-brightgreen)](package.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Node 20+](https://img.shields.io/badge/node-%E2%89%A520-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 
@@ -59,17 +59,19 @@ npx auk-develop generate    # analyze code → rules → all agent formats
 
 That's it. Now every AI tool you use reads context derived from your real code.
 
-## The 7 commands
+## The commands
 
 | Command | What it does |
 |:--|:--|
-| `auk generate` | Reads your code → mines conventions, builds the dependency graph, detects layers → writes `.auk/rules.yaml` + compiles all agent files |
+| `auk generate` | **Tree-sitter AST analysis** → mines conventions, builds the file *and function-level call graph*, clusters similar files semantically → writes `.auk/rules.yaml` + compiles all agent files |
 | `auk verify` | **Context-rot detection.** Re-checks every rule against the codebase: ✅ valid / ⚠️ degraded / ❌ violated / 💀 obsolete. Exit code 1 in `--ci` mode |
 | `auk compile` | One source of truth → CLAUDE.md, AGENTS.md, `.cursor/rules/*.mdc`, copilot-instructions.md, `.windsurfrules`, `.aider.conf.yml`, GEMINI.md |
 | `auk review` | **Architectural PR review.** Maps your diff onto the dependency graph: catches layer violations, new circular deps, god objects forming — and suggests existing patterns from *your own code* |
 | `auk decisions` | **Git archaeology.** Mines commit history, ADRs, and code comments to recover *when, who, and why* behind every convention |
 | `auk badge` | Context-health badge for your README — like a coverage badge, but for AI context |
 | `auk mcp` | **Live MCP server.** Agents query your rules, graph, and decisions in real time instead of reading a static file |
+| `auk graph` | **Interactive graph viewer.** One self-contained HTML file (no CDN): force-directed dependency + call graph, colored by layer, with search and per-symbol fan-in/out. `--open` / `--serve` |
+| `auk enhance` | **LLM polish without API keys.** Emits prompt batches your own AI agent (Claude Code, Cursor, Copilot…) processes; auk schema-validates the response and merges it — verification logic stays untouchable |
 
 ## Context rot detection
 
@@ -125,7 +127,22 @@ Static context files have a ceiling — they're snapshots. `auk mcp` exposes you
 
 Your agent can now ask: *which files depend on `payment-service.ts`?* — *what's the error-handling convention here?* — *why does this codebase forbid Controller imports in Services?* — and get answers backed by the actual graph, decision log, and verified rules.
 
-Tools exposed: `get_rules`, `get_rule`, `get_health`, `get_architecture`, `get_dependencies`, `get_decisions`.
+Tools exposed: `get_rules`, `get_rule`, `get_health`, `get_architecture`, `get_dependencies`, `get_call_graph`, `get_decisions`, `get_enhancement_tasks`, `apply_enhancements`.
+
+## LLM enhancement — your agent, no API keys
+
+auk's analysis is deterministic; descriptions can still read mechanically. Instead of calling an LLM API (keys, cost, privacy), auk delegates to **the AI agent you already pay for**:
+
+```bash
+auk generate --emit-prompts     # writes .auk/prompts/enhance-rules-NN.md
+# your agent writes enhance-rules-NN.response.json per the embedded schema
+auk enhance --apply .auk/prompts/enhance-rules-01.response.json
+auk compile
+```
+
+The response is schema-validated: unknown rule ids, oversized text, or attempts to touch verification logic are rejected. Enhanced descriptions survive regeneration and are marked stale if the underlying code pattern changed.
+
+Claude Code users: install the plugin in [`plugins/claude-code/`](plugins/) and run `/auk-enhance` — it does the whole loop. Cursor/Copilot instructions are in [`plugins/README.md`](plugins/README.md).
 
 ## Decision archaeology
 
@@ -157,15 +174,15 @@ The *why* gets compiled into CLAUDE.md/AGENTS.md too — so agents understand no
 | Reviews PRs architecturally | ❌ | ❌ | ✅ |
 | Tracks decision history | ❌ | ❌ | ✅ |
 | Live agent queries (MCP) | ❌ | ❌ | ✅ |
-| Dependencies | many | some | **zero** |
+| Dependencies | many | some | **one** (tree-sitter) |
 
-## Zero dependencies. Really.
+## One dependency. Really.
 
 ```json
-"dependencies": {}
+"dependencies": { "web-tree-sitter": "0.26.9" }
 ```
 
-No supply-chain surface, no install step worth mentioning, `npx` starts instantly. The CLI framework, YAML engine, ANSI colors, diff parser, and MCP server are all hand-rolled inside the package — and fully tested (52 tests on plain `node:test`).
+Real AST parsing via tree-sitter (WASM grammars bundled — no native compilation, no downloads), with a zero-dep regex fallback so `npx` never fails. Everything else — CLI framework, YAML engine, TF-IDF engine, ANSI colors, diff parser, MCP server, graph viewer — is hand-rolled inside the package and fully tested (77 tests on plain `node:test`).
 
 ## How it works
 
@@ -187,19 +204,21 @@ No supply-chain surface, no install step worth mentioning, `npx` starts instantl
               README badge
 ```
 
-1. **Scan** — walks the tree (gitignore-aware), detects languages
-2. **Parse** — extracts imports, exports, classes, functions per file
-3. **Graph** — builds the import graph; detects layers, cycles, hubs
-4. **Mine** — statistical convention detection (what do 80%+ of files do?)
+1. **Scan** — walks the tree (gitignore-aware), detects languages; unchanged files reuse the incremental cache
+2. **Parse** — tree-sitter AST extraction (TS/TSX/JS/Python/Go/Java/Rust) with body spans, call sites, and complexity; regex fallback for other languages
+3. **Graph** — file-level import graph **plus a function-level call graph**: layers, cycles, hub files, hotspot functions (fan-in), god classes
+4. **Mine** — statistical convention detection + **TF-IDF semantic clustering** ("these 12 files share the handler shape — new ones should too")
 5. **Synthesize** — converts patterns into prioritized, *evidence-backed* rules
 6. **Compile** — emits every agent format from one source of truth
 7. **Verify** — re-checks each claim on every run; health = % still true
 
-Languages analyzed: TypeScript, JavaScript, Python, Go, Rust, Java, Ruby, PHP (graph + conventions; deepest support for TS/JS).
+Languages with full AST analysis: TypeScript, JavaScript, Python, Go, Java, Rust. Regex-level support: Ruby, PHP, C#.
+
+**Commit the output.** `.auk/rules.yaml`, `graph.json`, `semantic.json`, and `decisions.yaml` are deterministic (same code → byte-identical output) — commit them so teammates and CI skip regeneration. Gitignore `.auk/cache.json` and `.auk/prompts/`.
 
 ## FAQ
 
-**Does it send my code anywhere?** No. 100% local static analysis. No LLM calls, no telemetry, no network.
+**Does it send my code anywhere?** No. 100% local static analysis. No LLM calls, no telemetry, no network. The optional `auk enhance` flow uses *your own* AI agent locally — auk itself never talks to an API.
 
 **Will it overwrite my hand-written CLAUDE.md?** `generate` writes compiled files marked with a header. Keep hand-written content in `.auk/rules.yaml` as custom rules — they survive regeneration and compile to every format.
 

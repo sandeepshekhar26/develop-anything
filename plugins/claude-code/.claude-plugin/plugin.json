@@ -1,0 +1,6 @@
+{
+  "name": "auk",
+  "description": "AI context engineering — generate, verify, and enhance codebase rules with auk",
+  "version": "1.0.0",
+  "author": { "name": "Sandeep Kumar" }
+}

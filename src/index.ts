@@ -15,6 +15,8 @@ import { decisionsCommand } from './commands/decisions.js';
 import { doctorCommand } from './commands/doctor.js';
 import { badgeCommand } from './commands/badge.js';
 import { mcpCommand } from './commands/mcp.js';
+import { enhanceCommand } from './commands/enhance.js';
+import { graphCommand } from './commands/graph.js';
 import { setVerbose } from './utils/logger.js';
 
 const program = new Command();
@@ -39,6 +41,8 @@ program.addCommand(decisionsCommand);
 program.addCommand(doctorCommand);
 program.addCommand(badgeCommand);
 program.addCommand(mcpCommand);
+program.addCommand(enhanceCommand);
+program.addCommand(graphCommand);
 
 // Default action (no command) — show help
 program.action(() => {

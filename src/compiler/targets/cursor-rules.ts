@@ -5,7 +5,7 @@
 import type { CompilerTarget } from '../target-registry.js';
 import type { RulesFile } from '../../types/rules.js';
 import type { DecisionsFile } from '../../types/decisions.js';
-import { generateHeader } from '../format.js';
+import { ruleDescription, generateHeader } from '../format.js';
 
 export const cursorRulesTarget: CompilerTarget = {
   name: 'cursor-rules',
@@ -26,7 +26,7 @@ export const cursorRulesTarget: CompilerTarget = {
 
     for (const rule of rules.rules) {
       const severity = rule.severity === 'critical' ? '🔴' : rule.severity === 'warning' ? '🟡' : 'ℹ️';
-      lines.push(`${severity} **${rule.id}**: ${rule.description.trim()}`);
+      lines.push(`${severity} **${rule.id}**: ${ruleDescription(rule).trim()}`);
       lines.push('');
     }
 

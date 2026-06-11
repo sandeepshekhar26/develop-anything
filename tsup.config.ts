@@ -9,7 +9,11 @@ export default defineConfig({
   sourcemap: true,
   dts: true,
   splitting: false,
+  // web-tree-sitter stays external so it resolves its own runtime wasm
+  // from node_modules; grammar wasms are copied to dist/wasm below.
+  external: ['web-tree-sitter'],
   banner: {
     js: '#!/usr/bin/env node',
   },
+  onSuccess: 'node scripts/copy-assets.mjs',
 });

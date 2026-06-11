@@ -5,7 +5,7 @@
 import type { CompilerTarget } from '../target-registry.js';
 import type { RulesFile } from '../../types/rules.js';
 import type { DecisionsFile } from '../../types/decisions.js';
-import { generateHeader, formatRulesAsMarkdown } from '../format.js';
+import { ruleDescription, generateHeader, formatRulesAsMarkdown } from '../format.js';
 
 export const claudeMdTarget: CompilerTarget = {
   name: 'claude-md',
@@ -33,7 +33,7 @@ export const claudeMdTarget: CompilerTarget = {
       lines.push('## ⚠️ Critical Rules (ALWAYS follow these)');
       lines.push('');
       for (const rule of critical) {
-        lines.push(`- **${rule.id}**: ${rule.description.trim()}`);
+        lines.push(`- **${rule.id}**: ${ruleDescription(rule).trim()}`);
       }
       lines.push('');
       lines.push('---');

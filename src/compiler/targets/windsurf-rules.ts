@@ -5,7 +5,7 @@
 import type { CompilerTarget } from '../target-registry.js';
 import type { RulesFile } from '../../types/rules.js';
 import type { DecisionsFile } from '../../types/decisions.js';
-import { generateHeader } from '../format.js';
+import { ruleDescription, generateHeader } from '../format.js';
 
 export const windsurfRulesTarget: CompilerTarget = {
   name: 'windsurf-rules',
@@ -17,7 +17,7 @@ export const windsurfRulesTarget: CompilerTarget = {
     lines.push(generateHeader(rules.healthScore));
 
     for (const rule of rules.rules) {
-      lines.push(`- ${rule.description.trim().replace(/\n/g, ' ')}`);
+      lines.push(`- ${ruleDescription(rule).trim().replace(/\n/g, ' ')}`);
     }
     lines.push('');
     return lines.join('\n');

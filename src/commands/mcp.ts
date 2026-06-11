@@ -69,6 +69,35 @@ const TOOLS: ToolDef[] = [
     },
   },
   {
+    name: 'get_call_graph',
+    description:
+      'Symbol-level call graph summary: hotspot functions (high fan-in), god classes, and per-symbol callers/callees for an optional file.',
+    inputSchema: {
+      type: 'object',
+      properties: { file: { type: 'string', description: 'Optional project-relative file path to detail' } },
+    },
+  },
+  {
+    name: 'get_enhancement_tasks',
+    description:
+      'List rules that need LLM enhancement (no enhanced description yet, or stale). Returns rule cores + instructions; respond via apply_enhancements.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'apply_enhancements',
+    description:
+      'Apply LLM-written rule enhancements. Pass { version: 1, batch: string, enhancements: [{ ruleId, description, rationale?, examples? }] }. Validation rejects unknown rule ids and out-of-bounds descriptions; verification logic is never modified.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        version: { type: 'number' },
+        batch: { type: 'string' },
+        enhancements: { type: 'array' },
+      },
+      required: ['version', 'batch', 'enhancements'],
+    },
+  },
+  {
     name: 'get_decisions',
     description:
       'Get the architectural decision log: when/why conventions were adopted, mined from git history, ADRs, and code comments.',
@@ -154,7 +183,71 @@ async function callTool(
       if (!node && imports.length === 0 && dependents.length === 0) {
         return errorResult(`File not in graph: ${file}. Use project-relative paths (e.g. src/services/user.ts).`);
       }
-      return textResult({ file, layer: node?.layer, exports: node?.symbols, imports, dependents });
+      const fileSymbols = (graph.symbols ?? [])
+        .filter(s => s.file === file)
+        .map(s => ({ name: s.name, kind: s.kind, fanIn: s.metrics.fanIn, fanOut: s.metrics.fanOut }));
+      return textResult({ file, layer: node?.layer, exports: node?.symbols, imports, dependents, symbols: fileSymbols });
+    }
+
+    case 'get_call_graph': {
+      const graph = loadJson<DependencyGraph>('graph.json', projectRoot);
+      if (!graph) return errorResult('No dependency graph found. Run `auk generate` first.');
+      const symbols = graph.symbols ?? [];
+      const callEdges = graph.callEdges ?? [];
+      if (symbols.length === 0) {
+        return errorResult('Graph has no symbol-level data. Re-run `auk generate` (requires auk v2+).');
+      }
+      const hotspots = [...symbols]
+        .filter(s => s.kind === 'function' || s.kind === 'method')
+        .sort((a, b) => b.metrics.fanIn - a.metrics.fanIn)
+        .slice(0, 10)
+        .map(s => ({ symbol: s.id, fanIn: s.metrics.fanIn, fanOut: s.metrics.fanOut }));
+      const result: Record<string, unknown> = {
+        stats: { symbols: symbols.length, callEdges: callEdges.length, parserCoverage: graph.parserCoverage },
+        hotspots,
+      };
+      if (typeof args.file === 'string') {
+        const prefix = `${args.file}#`;
+        result.fileDetail = {
+          symbols: symbols.filter(s => s.file === args.file),
+          outgoingCalls: callEdges.filter(e => e.source.startsWith(prefix) && e.resolved),
+          incomingCalls: callEdges.filter(e => e.target.startsWith(prefix)),
+        };
+      }
+      return textResult(result);
+    }
+
+    case 'get_enhancement_tasks': {
+      const rulesFile = await loadYaml<RulesFile>('rules.yaml', projectRoot);
+      if (!rulesFile) return errorResult('No rules found. Run `auk generate` first.');
+      const { rulesNeedingEnhancement } = await import('../generator/prompt-emitter.js');
+      const pending = rulesNeedingEnhancement(rulesFile);
+      return textResult({
+        instructions:
+          'Rewrite each description to be clearer and more actionable for an AI assistant; add a short rationale. Do not change verification logic. Respond via the apply_enhancements tool.',
+        rules: pending.map(r => ({
+          ruleId: r.id,
+          category: r.category,
+          severity: r.severity,
+          description: r.description,
+          evidence: r.evidence.map(e => ({ file: e.file, line: e.line })),
+        })),
+      });
+    }
+
+    case 'apply_enhancements': {
+      const rulesFile = await loadYaml<RulesFile>('rules.yaml', projectRoot);
+      if (!rulesFile) return errorResult('No rules found. Run `auk generate` first.');
+      const { parseEnhancementResponse, applyEnhancements } = await import('../generator/enhancement-validator.js');
+      try {
+        const response = parseEnhancementResponse(JSON.stringify(args));
+        const result = applyEnhancements(response, rulesFile, projectRoot);
+        const { saveYaml } = await import('../utils/config.js');
+        await saveYaml('rules.yaml', rulesFile, projectRoot);
+        return textResult({ ...result, hint: 'Run `auk compile` to refresh agent context files.' });
+      } catch (err) {
+        return errorResult(`Invalid enhancement payload: ${(err as Error).message}`);
+      }
     }
 
     case 'get_decisions': {

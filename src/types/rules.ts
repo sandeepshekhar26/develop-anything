@@ -48,6 +48,19 @@ export interface RuleVerification {
   subject?: 'class' | 'function' | 'all';
 }
 
+/** LLM-written enhancement of a rule. The deterministic core (id,
+    verification, evidence, confidence) is never touched by enhancement,
+    so a bad LLM response cannot corrupt verification. */
+export interface RuleEnhancement {
+  description: string;
+  rationale?: string;
+  examples?: RuleEvidence[];
+  enhancedAt: string;
+  source: string;              // e.g. 'host-agent'
+  /** set when the deterministic description changed after enhancement */
+  stale?: boolean;
+}
+
 /** A single rule in the rules.yaml */
 export interface Rule {
   id: string;
@@ -60,6 +73,19 @@ export interface Rule {
   verification: RuleVerification;
   decisionRef?: string;       // links to decisions.yaml
   confidence: number;         // 0-1, how confident the analysis is
+  enhanced?: RuleEnhancement; // optional LLM-polished layer (v2)
+}
+
+/** Response schema for `auk enhance --apply` (written by a host agent) */
+export interface EnhancementResponse {
+  version: 1;
+  batch: string;
+  enhancements: Array<{
+    ruleId: string;
+    description: string;
+    rationale?: string;
+    examples?: Array<{ file: string; note: string }>;
+  }>;
 }
 
 /** The complete rules.yaml structure */

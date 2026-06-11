@@ -3,6 +3,7 @@
 // ============================================================
 
 import type { CompilerTarget } from '../target-registry.js';
+import { ruleDescription } from '../format.js';
 import type { RulesFile } from '../../types/rules.js';
 import type { DecisionsFile } from '../../types/decisions.js';
 
@@ -18,7 +19,7 @@ export const aiderConfTarget: CompilerTarget = {
     lines.push('');
     lines.push('conventions:');
     for (const rule of rules.rules) {
-      lines.push(`  - "${rule.description.trim().replace(/\n/g, ' ').replace(/"/g, '\\"')}"`);
+      lines.push(`  - "${ruleDescription(rule).trim().replace(/\n/g, ' ').replace(/"/g, '\\"')}"`);
     }
     lines.push('');
     lines.push(`read: [CLAUDE.md]`);
