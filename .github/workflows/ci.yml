@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # Tests run on node:test with ZERO dependencies — no install needed
+      - name: Run tests
+        run: npm test
+
+  build:
+    name: Build & smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install build tooling
+        run: npm ci || npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test compiled CLI
+        run: |
+          node dist/index.js --help
+          mkdir -p /tmp/smoke/src && cd /tmp/smoke
+          echo 'export class Demo {}' > src/demo.ts
+          node "$GITHUB_WORKSPACE/dist/index.js" init
+          node "$GITHUB_WORKSPACE/dist/index.js" generate
+          node "$GITHUB_WORKSPACE/dist/index.js" verify
+          test -f CLAUDE.md && test -f AGENTS.md

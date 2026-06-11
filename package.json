@@ -1,0 +1,68 @@
+{
+  "name": "auk-dev",
+  "version": "1.0.0",
+  "description": "The AI Context Engineering Platform \u2014 one command and every AI coding tool understands your codebase. Zero dependencies.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "auk": "dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "node --experimental-strip-types --no-warnings --import ./scripts/ts-run.mjs src/index.ts",
+    "start": "node dist/index.js",
+    "test": "node --experimental-strip-types --no-warnings --import ./scripts/ts-run.mjs --test \"tests/**/*.test.ts\"",
+    "test:e2e": "node --experimental-strip-types --no-warnings --import ./scripts/ts-run.mjs --test \"tests/e2e/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "claude-code",
+    "cursor",
+    "copilot",
+    "codex",
+    "gemini-cli",
+    "aider",
+    "windsurf",
+    "context-engineering",
+    "claude-md",
+    "agents-md",
+    "code-analysis",
+    "architecture",
+    "developer-tools",
+    "tree-sitter",
+    "knowledge-graph",
+    "context-rot",
+    "decision-tracking",
+    "cursorrules",
+    "mcp",
+    "mcp-server",
+    "zero-dependencies"
+  ],
+  "author": "Sandeep Kumar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepshekhar26/develop-anything.git"
+  },
+  "homepage": "https://github.com/sandeepshekhar26/develop-anything#readme",
+  "bugs": {
+    "url": "https://github.com/sandeepshekhar26/develop-anything/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}

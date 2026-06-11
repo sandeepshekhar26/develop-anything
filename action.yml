@@ -1,0 +1,81 @@
+name: 'auk — AI Context Health Check'
+description: >
+  Verifies that your AI context files (CLAUDE.md, AGENTS.md, .cursorrules, …)
+  still match your actual codebase, and reviews PRs for architectural
+  violations. Posts findings as a PR comment.
+author: 'Sandeep Kumar'
+branding:
+  icon: 'shield'
+  color: 'purple'
+
+inputs:
+  github-token:
+    description: 'Token used to post the PR comment (use secrets.GITHUB_TOKEN)'
+    required: false
+    default: ${{ github.token }}
+  fail-on-violations:
+    description: 'Fail the check when rules are violated or the PR breaks architecture'
+    required: false
+    default: 'true'
+  working-directory:
+    description: 'Directory containing the project (defaults to repo root)'
+    required: false
+    default: '.'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Run auk verify + review
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        set +e
+        echo "## 🪶 auk — Context Health Report" > /tmp/auk-report.md
+        echo "" >> /tmp/auk-report.md
+
+        npx --yes auk-dev generate --no-compile > /dev/null 2>&1
+
+        echo '```' >> /tmp/auk-report.md
+        NO_COLOR=1 npx --yes auk-dev verify ${{ inputs.fail-on-violations == 'true' && '--ci' || '' }} >> /tmp/auk-report.md 2>&1
+        VERIFY_EXIT=$?
+        echo '```' >> /tmp/auk-report.md
+
+        if [ -n "$GITHUB_BASE_REF" ]; then
+          echo "" >> /tmp/auk-report.md
+          echo "### Architectural Review" >> /tmp/auk-report.md
+          echo '```' >> /tmp/auk-report.md
+          git fetch origin "$GITHUB_BASE_REF" --depth=50 > /dev/null 2>&1
+          NO_COLOR=1 npx --yes auk-dev review --diff "origin/$GITHUB_BASE_REF" ${{ inputs.fail-on-violations == 'true' && '--ci' || '' }} >> /tmp/auk-report.md 2>&1
+          REVIEW_EXIT=$?
+          echo '```' >> /tmp/auk-report.md
+        else
+          REVIEW_EXIT=0
+        fi
+
+        echo "AUK_VERIFY_EXIT=$VERIFY_EXIT" >> "$GITHUB_ENV"
+        echo "AUK_REVIEW_EXIT=$REVIEW_EXIT" >> "$GITHUB_ENV"
+        exit 0
+
+    - name: Post PR comment
+      if: github.event_name == 'pull_request' && inputs.github-token != ''
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+        gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+          -f body="$(cat /tmp/auk-report.md)" || echo "Could not post comment (missing permissions?)"
+
+    - name: Enforce result
+      shell: bash
+      run: |
+        if [ "${{ inputs.fail-on-violations }}" = "true" ]; then
+          if [ "${AUK_VERIFY_EXIT:-0}" != "0" ] || [ "${AUK_REVIEW_EXIT:-0}" != "0" ]; then
+            echo "auk found violations — failing check"
+            exit 1
+          fi
+        fi
